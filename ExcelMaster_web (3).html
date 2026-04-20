@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExcelMaster — Formation Excel Débutant → Expert</title>
+<style>
+/* ===================================================================
+   ExcelMaster - Styles
+   =================================================================== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --primary: #217346;
+  --primary-dark: #185432;
+  --primary-light: #2E8B57;
+  --bg-main: #F3F2F1;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #2B2B2B;
+  --bg-grid-header: #E6E6E6;
+  --bg-grid-selected: #CCE8CF;
+  --bg-grid-target: #FFF4C5;
+  --text-primary: #201F1E;
+  --text-secondary: #605E5C;
+  --text-muted: #A19F9D;
+  --success: #107C10;
+  --success-bg: #DFF6DD;
+  --error: #D13438;
+  --error-bg: #FDE7E9;
+  --warning: #F7B801;
+  --warning-bg: #FFF4CE;
+  --info: #0078D4;
+  --info-bg: #DEECF9;
+  --xp: #FFB400;
+  --badge: #9C27B0;
+  --grid-border: #D4D4D4;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+button { font-family: inherit; cursor: pointer; border: none; }
+
+/* ============ LOGIN ============ */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-card {
+  background: white;
+  border: 1px solid var(--grid-border);
+  padding: 40px;
+  border-radius: 4px;
+  width: 420px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.login-logo { text-align: center; font-size: 48px; margin-bottom: 10px; }
+.login-title { text-align: center; font-size: 32px; color: var(--primary); font-weight: bold; }
+.login-tagline { text-align: center; color: var(--text-secondary); margin-bottom: 24px; font-size: 14px; }
+.login-tabs { display: flex; border-bottom: 1px solid var(--grid-border); margin-bottom: 20px; }
+.login-tabs button {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  font-weight: bold;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+}
+.login-tabs button.active { color: var(--primary); border-bottom-color: var(--primary); }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 4px; }
+.form-group input {
+  width: 100%; padding: 10px; font-size: 14px;
+  border: 1px solid var(--grid-border); border-radius: 2px;
+  font-family: inherit;
+}
+.form-group input:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.btn-primary {
+  width: 100%; padding: 12px; background: var(--primary); color: white;
+  font-weight: bold; font-size: 14px; border-radius: 2px; margin-top: 10px;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.error-msg { color: var(--error); font-size: 13px; margin-top: 8px; text-align: center; min-height: 18px; }
+.version-tag { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 20px; }
+
+/* ============ HEADER ============ */
+.app-header {
+  background: var(--bg-sidebar);
+  color: white;
+  padding: 18px 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.app-header .avatar { font-size: 36px; }
+.app-header .user-info { flex: 1; }
+.app-header .user-name { font-size: 18px; font-weight: bold; }
+.app-header .user-role { font-size: 12px; color: #D0D0D0; }
+.app-header .xp-block { text-align: center; }
+.app-header .xp-level { color: var(--xp); font-weight: bold; font-size: 16px; }
+.xp-bar {
+  width: 260px; height: 12px; background: #4A4A4A; border-radius: 6px; margin: 5px auto; overflow: hidden;
+}
+.xp-bar-fill { height: 100%; background: var(--xp); transition: width 0.3s; }
+.app-header .xp-text { font-size: 11px; color: #D0D0D0; }
+.header-actions { display: flex; gap: 8px; }
+.btn-header {
+  padding: 8px 14px; font-size: 12px; font-weight: bold; border-radius: 2px;
+  background: rgba(255,255,255,0.15); color: white; transition: background 0.2s;
+}
+.btn-header:hover { background: rgba(255,255,255,0.25); }
+.btn-header.teacher { background: var(--warning); color: #333; }
+.btn-header.danger { background: var(--error); }
+
+/* ============ HOME ============ */
+.home-body { padding: 25px 30px; }
+.home-title { font-size: 22px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+.home-title .subtitle { font-size: 13px; color: var(--text-secondary); font-weight: normal; }
+.modules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.module-card {
+  background: white;
+  border: 1px solid var(--grid-border);
+  border-radius: 4px;
+  display: flex;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.module-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.module-card.locked { opacity: 0.7; }
+.module-stripe { width: 8px; flex-shrink: 0; }
+.module-content { flex: 1; padding: 16px 18px; }
+.module-header { display: flex; align-items: center; gap: 10px; }
+.module-icon { font-size: 28px; }
+.module-title-block { flex: 1; }
+.module-title { font-size: 15px; font-weight: bold; }
+.module-subtitle { font-size: 12px; color: var(--text-secondary); }
+.module-status { font-size: 20px; }
+.module-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 8px 0;
+  line-height: 1.4;
+}
+.module-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  background: #E6E6E6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar-fill { height: 100%; transition: width 0.3s; }
+.module-actions { display: flex; gap: 8px; margin-top: 8px; }
+.btn-module {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+.btn-lesson {
+  background: white;
+  color: var(--primary);
+  border-color: var(--grid-border);
+}
+.btn-lesson:hover { background: #F0F0F0; }
+.btn-exercise {
+  background: var(--primary);
+  color: white;
+}
+.btn-exercise:hover { background: var(--primary-dark); }
+.lock-msg { font-size: 12px; color: var(--warning); padding: 6px 0; }
+
+/* ============ LESSON ============ */
+.lesson-header {
+  padding: 18px 30px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.lesson-header h2 { font-size: 22px; font-weight: bold; }
+.lesson-header .subtitle { font-size: 14px; opacity: 0.9; }
+.lesson-body { padding: 25px 30px; max-width: 900px; }
+.lesson-tabs { display: flex; gap: 10px; border-bottom: 2px solid var(--grid-border); margin-bottom: 20px; }
+.lesson-tabs button {
+  padding: 10px 18px;
+  background: transparent;
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+.lesson-tabs button.active { color: var(--primary); border-bottom-color: var(--primary); }
+.lesson-content-card {
+  background: white;
+  border: 1px solid var(--grid-border);
+  padding: 25px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 15px;
+}
+.lesson-content-card h3 { color: var(--primary); margin: 18px 0 10px; font-size: 15px; }
+.lesson-content-card h3:first-child { margin-top: 0; }
+.lesson-content-card p { margin-bottom: 10px; }
+.lesson-content-card ul { margin: 10px 0 10px 24px; }
+.lesson-content-card li { margin-bottom: 5px; }
+.lesson-content-card code {
+  font-family: 'Consolas', monospace;
+  background: #F0F0F0;
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: var(--primary);
+  font-size: 13px;
+}
+.tip-box {
+  background: var(--warning-bg);
+  border-left: 4px solid var(--warning);
+  padding: 15px 20px;
+  border-radius: 2px;
+  margin-top: 15px;
+}
+.tip-box .tip-title { font-weight: bold; margin-bottom: 5px; }
+
+/* ============ EXERCISE ============ */
+.exercise-topbar {
+  padding: 12px 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.exercise-topbar h3 { font-size: 16px; font-weight: bold; }
+.exercise-topbar .progress-text { margin-left: auto; font-weight: bold; }
+.exercise-body {
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  gap: 15px;
+  padding: 15px 20px;
+}
+.exercise-panel {
+  background: white;
+  border: 1px solid var(--grid-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+/* Formula bar */
+.formula-bar {
+  display: flex;
+  align-items: stretch;
+  padding: 8px;
+  gap: 4px;
+  border-bottom: 1px solid var(--grid-border);
+}
+.fb-namebox {
+  width: 60px;
+  background: white;
+  border: 1px solid var(--grid-border);
+  text-align: center;
+  line-height: 28px;
+  font-family: 'Consolas', monospace;
+  font-weight: bold;
+}
+.fb-fx {
+  width: 30px;
+  text-align: center;
+  line-height: 28px;
+  color: var(--primary);
+  font-style: italic;
+  font-weight: bold;
+}
+.fb-input {
+  flex: 1;
+  border: 1px solid var(--grid-border);
+  padding: 5px 8px;
+  font-family: 'Consolas', monospace;
+  font-size: 13px;
+}
+.fb-input:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+
+/* Excel grid */
+.excel-grid {
+  overflow: auto;
+  max-height: 260px;
+  border-top: 1px solid var(--grid-border);
+}
+table.xls {
+  border-collapse: collapse;
+  font-family: 'Calibri', sans-serif;
+  font-size: 13px;
+  width: 100%;
+}
+.xls th, .xls td {
+  border: 1px solid var(--grid-border);
+  min-width: 90px;
+  height: 25px;
+  padding: 3px 6px;
+}
+.xls th {
+  background: var(--bg-grid-header);
+  text-align: center;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+.xls th.row-header { min-width: 35px; }
+.xls td.numeric { text-align: right; }
+.xls td.locked { background: #FAFAFA; color: #333; }
+.xls td.target { background: var(--bg-grid-target) !important; }
+.xls td.active {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+.xls td input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+}
+.xls td.formula-cell { color: #000; }
+
+.grid-actions {
+  display: flex;
+  padding: 10px;
+  gap: 8px;
+  justify-content: space-between;
+  border-top: 1px solid var(--grid-border);
+}
+.btn-secondary {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  background: white;
+  color: var(--text-primary);
+  border: 1px solid var(--grid-border);
+  border-radius: 2px;
+}
+.btn-success {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: bold;
+  background: var(--success);
+  color: white;
+  border-radius: 2px;
+}
+.btn-success:hover { background: #0E6B0E; }
+
+/* Right panel */
+.right-panel-scroll {
+  overflow-y: auto;
+  max-height: 640px;
+}
+.right-panel-header {
+  padding: 12px 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+.right-panel-body { padding: 14px 16px; }
+.xp-badge {
+  color: var(--xp);
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.statement-box {
+  background: var(--info-bg);
+  border: 1px solid var(--info);
+  padding: 12px;
+  border-radius: 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  white-space: pre-wrap;
+}
+.target-msg {
+  background: var(--warning-bg);
+  padding: 10px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 10px 0 6px;
+  color: var(--text-primary);
+}
+.hint-hidden {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.hint-bubble {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning);
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  border-radius: 2px;
+}
+.hint-bubble strong { display: block; color: #7A5200; margin-bottom: 3px; }
+.btn-hint {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  background: var(--warning);
+  color: white;
+  border-radius: 2px;
+  margin-top: 4px;
+}
+.btn-hint:disabled { background: #CCC; color: #666; cursor: not-allowed; }
+
+/* Feedback */
+.feedback {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 2px;
+  border: 2px solid;
+  font-size: 13px;
+}
+.feedback.success {
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+.feedback.error {
+  background: var(--error-bg);
+  border-color: var(--error);
+}
+.feedback .fb-title {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+.feedback .fb-title.success { color: var(--success); }
+.feedback .fb-title.error { color: var(--error); }
+.explanation {
+  background: var(--info-bg);
+  border: 1px solid var(--info);
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 2px;
+}
+.explanation-title { color: var(--info); font-weight: bold; margin-bottom: 4px; }
+.xp-earned {
+  color: var(--xp);
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 8px;
+}
+.badge-popup {
+  background: var(--badge);
+  color: white;
+  padding: 10px;
+  border-radius: 2px;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid var(--grid-border);
+  background: #FAFAFA;
+}
+.btn-back {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 2px;
+}
+
+/* Leaderboard */
+.leaderboard-header {
+  background: var(--primary);
+  color: white;
+  padding: 18px 30px;
+  display: flex; align-items: center; gap: 15px;
+}
+.leaderboard-body { padding: 25px 30px; }
+.podium {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+  align-items: flex-end;
+}
+.podium-spot {
+  text-align: center;
+  padding: 15px;
+  border-radius: 4px;
+  min-width: 180px;
+  font-size: 14px;
+}
+.podium-spot.gold { background: #FFD700; height: 180px; }
+.podium-spot.silver { background: #C0C0C0; height: 150px; }
+.podium-spot.bronze { background: #CD7F32; color: white; height: 120px; }
+.podium-spot .medal { font-size: 32px; }
+.podium-spot .name { font-weight: bold; margin: 4px 0; }
+.leaderboard-table {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--grid-border);
+  border-radius: 4px;
+  border-collapse: collapse;
+}
+.leaderboard-table th {
+  background: var(--primary);
+  color: white;
+  padding: 10px;
+  font-size: 13px;
+  text-align: left;
+}
+.leaderboard-table td { padding: 10px; border-top: 1px solid var(--grid-border); font-size: 13px; }
+.leaderboard-table tr.me { background: var(--warning-bg); font-weight: bold; }
+
+/* Utility */
+.center { text-align: center; }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Contenu injecté dynamiquement -->
+</div>
+
+<script>
+// ===================================================================
+// EXCEL FORMULA ENGINE (JavaScript port)
+// ===================================================================
+class ExcelError extends Error {
+  constructor(code = '#VALEUR!', msg = '') {
+    super(code + ' ' + msg);
+    this.code = code;
+    this.msg = msg;
+  }
+  toString() { return this.code; }
+}
+
+// --- Utils ---
+function colLetterToIndex(s) {
+  let n = 0;
+  for (const c of s.toUpperCase()) n = n * 26 + (c.charCodeAt(0) - 64);
+  return n;
+}
+function colIndexToLetter(n) {
+  let s = '';
+  while (n > 0) { const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+function parseCellRef(ref) {
+  const m = ref.toUpperCase().replace(/\$/g, '').match(/^([A-Z]+)(\d+)$/);
+  if (!m) throw new ExcelError('#REF!');
+  return { col: m[1], row: parseInt(m[2]) };
+}
+function toNumber(v) {
+  if (v === null || v === undefined || v === '') return 0;
+  if (typeof v === 'boolean') return v ? 1 : 0;
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') {
+    const n = parseFloat(v.replace(',', '.'));
+    if (isNaN(n)) throw new ExcelError('#VALEUR!', 'Not a number: ' + v);
+    return n;
+  }
+  throw new ExcelError('#VALEUR!');
+}
+function toBool(v) {
+  if (typeof v === 'boolean') return v;
+  if (typeof v === 'number') return v !== 0;
+  if (typeof v === 'string') {
+    const u = v.trim().toUpperCase();
+    if (u === 'VRAI' || u === 'TRUE') return true;
+    if (u === 'FAUX' || u === 'FALSE' || u === '') return false;
+  }
+  return !!v;
+}
+function toText(v) {
+  if (v === null || v === undefined) return '';
+  if (typeof v === 'boolean') return v ? 'VRAI' : 'FAUX';
+  if (typeof v === 'number') {
+    if (Number.isInteger(v)) return String(v);
+    return String(v).replace('.', ',');
+  }
+  return String(v);
+}
+function isNumeric(v) {
+  if (typeof v === 'boolean') return false;
+  if (typeof v === 'number') return true;
+  if (typeof v === 'string') {
+    const n = parseFloat(v.replace(',', '.'));
+    return !isNaN(n) && isFinite(n);
+  }
+  return false;
+}
+function flatten(arr) {
+  const out = [];
+  for (const a of arr) {
+    if (Array.isArray(a)) out.push(...flatten(a));
+    else out.push(a);
+  }
+  return out;
+}
+function numericValues(args) {
+  const out = [];
+  for (const v of flatten(args)) {
+    if (v === null || v === '' || typeof v === 'boolean') continue;
+    if (typeof v === 'number') out.push(v);
+    else if (typeof v === 'string') {
+      const n = parseFloat(v.replace(',', '.'));
+      if (!isNaN(n)) out.push(n);
+    }
+  }
+  return out;
+}
+function valuesEqual(a, b) {
+  if (isNumeric(a) && isNumeric(b)) return toNumber(a) === toNumber(b);
+  return toText(a).toUpperCase() === toText(b).toUpperCase();
+}
+function matchCriterion(value, criterion) {
+  if (typeof criterion === 'number') return isNumeric(value) && toNumber(value) === criterion;
+  if (typeof criterion !== 'string') return value === criterion;
+  const c = criterion.trim();
+  for (const op of ['>=', '<=', '<>', '>', '<', '=']) {
+    if (c.startsWith(op)) {
+      const rhs = c.slice(op.length).trim();
+      if (isNumeric(rhs) && isNumeric(value)) {
+        const a = toNumber(value), b = toNumber(rhs);
+        return {'=':a===b,'<>':a!==b,'>':a>b,'<':a<b,'>=':a>=b,'<=':a<=b}[op];
+      }
+      const a = toText(value), b = rhs;
+      return {'=':a===b,'<>':a!==b,'>':a>b,'<':a<b,'>=':a>=b,'<=':a<=b}[op];
+    }
+  }
+  if (c.includes('*') || c.includes('?')) {
+    const re = new RegExp('^' + c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')
+      .replace(/\\\*/g,'.*').replace(/\\\?/g,'.') + '$', 'i');
+    return re.test(toText(value));
+  }
+  if (isNumeric(c) && isNumeric(value)) return toNumber(c) === toNumber(value);
+  return toText(value).toUpperCase() === c.toUpperCase();
+}
+
+// --- Functions ---
+const FN = {
+  SOMME: (...a) => numericValues(a).reduce((s,v)=>s+v,0),
+  SUM: (...a) => FN.SOMME(...a),
+  MOYENNE: (...a) => { const n = numericValues(a); if (!n.length) throw new ExcelError('#DIV/0!'); return n.reduce((s,v)=>s+v,0)/n.length; },
+  AVERAGE: (...a) => FN.MOYENNE(...a),
+  MIN: (...a) => { const n = numericValues(a); return n.length ? Math.min(...n) : 0; },
+  MAX: (...a) => { const n = numericValues(a); return n.length ? Math.max(...n) : 0; },
+  NB: (...a) => numericValues(a).length,
+  COUNT: (...a) => FN.NB(...a),
+  NBVAL: (...a) => flatten(a).filter(v => v !== null && v !== '' && v !== undefined).length,
+  COUNTA: (...a) => FN.NBVAL(...a),
+  'NB.VIDE': (...a) => flatten(a).filter(v => v === null || v === '').length,
+  ARRONDI: (n, k) => { const x = toNumber(n), d = Math.pow(10, Math.trunc(toNumber(k))); return Math.round(x*d)/d; },
+  ROUND: (n, k) => FN.ARRONDI(n, k),
+  ENT: (n) => Math.floor(toNumber(n)),
+  INT: (n) => FN.ENT(n),
+  ABS: (n) => Math.abs(toNumber(n)),
+  PUISSANCE: (n, p) => Math.pow(toNumber(n), toNumber(p)),
+  POWER: (n, p) => FN.PUISSANCE(n, p),
+  RACINE: (n) => { const x = toNumber(n); if (x < 0) throw new ExcelError('#NOMBRE!'); return Math.sqrt(x); },
+  SQRT: (n) => FN.RACINE(n),
+  MOD: (a, b) => { const x = toNumber(a), y = toNumber(b); if (y === 0) throw new ExcelError('#DIV/0!'); return x - y * Math.floor(x/y); },
+  SI: (c, t, f) => toBool(c) ? t : (f !== undefined ? f : false),
+  IF: (c, t, f) => FN.SI(c, t, f),
+  ET: (...a) => flatten(a).every(v => toBool(v)),
+  AND: (...a) => FN.ET(...a),
+  OU: (...a) => flatten(a).some(v => toBool(v)),
+  OR: (...a) => FN.OU(...a),
+  NON: (v) => !toBool(v),
+  NOT: (v) => FN.NON(v),
+  'SI.CONDITIONS': (...args) => {
+    if (args.length % 2 !== 0) throw new ExcelError('#N/A');
+    for (let i = 0; i < args.length; i += 2) {
+      if (toBool(args[i])) return args[i+1];
+    }
+    throw new ExcelError('#N/A');
+  },
+  IFS: (...args) => FN['SI.CONDITIONS'](...args),
+  ESTERREUR: (v) => v instanceof ExcelError,
+  ISERROR: (v) => FN.ESTERREUR(v),
+  ESTNUM: (v) => typeof v === 'number',
+  ISNUMBER: (v) => FN.ESTNUM(v),
+  ESTTEXTE: (v) => typeof v === 'string',
+  ISTEXT: (v) => FN.ESTTEXTE(v),
+  ESTVIDE: (v) => v === null || v === undefined || v === '',
+  ISBLANK: (v) => FN.ESTVIDE(v),
+  'SOMME.SI': (rng, crit, sumRng) => {
+    const r = Array.isArray(rng) ? flatten(rng) : [rng];
+    const sr = sumRng ? (Array.isArray(sumRng) ? flatten(sumRng) : [sumRng]) : r;
+    let total = 0;
+    for (let i = 0; i < r.length; i++) {
+      if (matchCriterion(r[i], crit) && i < sr.length) {
+        try { total += toNumber(sr[i]); } catch {}
+      }
+    }
+    return total;
+  },
+  SUMIF: (...a) => FN['SOMME.SI'](...a),
+  'NB.SI': (rng, crit) => {
+    const r = Array.isArray(rng) ? flatten(rng) : [rng];
+    return r.filter(v => matchCriterion(v, crit)).length;
+  },
+  COUNTIF: (...a) => FN['NB.SI'](...a),
+  'MOYENNE.SI': (rng, crit, avgRng) => {
+    const r = Array.isArray(rng) ? flatten(rng) : [rng];
+    const ar = avgRng ? (Array.isArray(avgRng) ? flatten(avgRng) : [avgRng]) : r;
+    const vals = [];
+    for (let i = 0; i < r.length; i++) {
+      if (matchCriterion(r[i], crit) && i < ar.length && isNumeric(ar[i])) {
+        vals.push(toNumber(ar[i]));
+      }
+    }
+    if (!vals.length) throw new ExcelError('#DIV/0!');
+    return vals.reduce((s,v)=>s+v,0) / vals.length;
+  },
+  AVERAGEIF: (...a) => FN['MOYENNE.SI'](...a),
+  'SOMME.SI.ENS': (sumRng, ...rngCrits) => {
+    const sr = Array.isArray(sumRng) ? flatten(sumRng) : [sumRng];
+    if (rngCrits.length % 2 !== 0) throw new ExcelError('#VALEUR!');
+    const pairs = [];
+    for (let i = 0; i < rngCrits.length; i += 2) {
+      pairs.push([Array.isArray(rngCrits[i]) ? flatten(rngCrits[i]) : [rngCrits[i]], rngCrits[i+1]]);
+    }
+    let total = 0;
+    for (let i = 0; i < sr.length; i++) {
+      let ok = true;
+      for (const [rng, crit] of pairs) {
+        if (i >= rng.length || !matchCriterion(rng[i], crit)) { ok = false; break; }
+      }
+      if (ok) { try { total += toNumber(sr[i]); } catch {} }
+    }
+    return total;
+  },
+  SUMIFS: (...a) => FN['SOMME.SI.ENS'](...a),
+  'NB.SI.ENS': (...rngCrits) => {
+    if (rngCrits.length % 2 !== 0) throw new ExcelError('#VALEUR!');
+    const pairs = [];
+    for (let i = 0; i < rngCrits.length; i += 2) {
+      pairs.push([Array.isArray(rngCrits[i]) ? flatten(rngCrits[i]) : [rngCrits[i]], rngCrits[i+1]]);
+    }
+    if (!pairs.length) return 0;
+    const n = pairs[0][0].length;
+    let count = 0;
+    for (let i = 0; i < n; i++) {
+      let ok = true;
+      for (const [rng, crit] of pairs) {
+        if (i >= rng.length || !matchCriterion(rng[i], crit)) { ok = false; break; }
+      }
+      if (ok) count++;
+    }
+    return count;
+  },
+  COUNTIFS: (...a) => FN['NB.SI.ENS'](...a),
+  RECHERCHEV: (val, tbl, colIdx, approx) => {
+    if (!Array.isArray(tbl)) throw new ExcelError('#VALEUR!');
+    const rows = Array.isArray(tbl[0]) ? tbl : [tbl];
+    const ci = Math.trunc(toNumber(colIdx));
+    if (ci < 1 || ci > rows[0].length) throw new ExcelError('#REF!');
+    const exact = !(approx === undefined ? false : toBool(approx));
+    if (exact) {
+      for (const r of rows) if (valuesEqual(r[0], val)) return r[ci-1];
+      throw new ExcelError('#N/A');
+    }
+    let match = null;
+    const vn = isNumeric(val) ? toNumber(val) : null;
+    for (const r of rows) {
+      const k = r[0];
+      if (vn !== null && isNumeric(k)) {
+        if (toNumber(k) <= vn) match = r; else break;
+      } else {
+        if (toText(k) <= toText(val)) match = r; else break;
+      }
+    }
+    if (!match) throw new ExcelError('#N/A');
+    return match[ci-1];
+  },
+  VLOOKUP: (...a) => FN.RECHERCHEV(...a),
+  RECHERCHEX: (val, searchRng, returnRng, ifNotFound, mcMode, srMode) => {
+    const sr = Array.isArray(searchRng) ? flatten(searchRng) : [searchRng];
+    const rr = Array.isArray(returnRng) ? flatten(returnRng) : [returnRng];
+    const mc = mcMode === undefined ? 0 : Math.trunc(toNumber(mcMode));
+    for (let i = 0; i < sr.length; i++) {
+      if (mc === 0 && valuesEqual(sr[i], val)) return rr[i];
+    }
+    if (ifNotFound !== undefined && ifNotFound !== null) return ifNotFound;
+    throw new ExcelError('#N/A');
+  },
+  XLOOKUP: (...a) => FN.RECHERCHEX(...a),
+  INDEX: (tbl, row, col) => {
+    if (Array.isArray(tbl) && tbl.length && Array.isArray(tbl[0])) {
+      const r = Math.trunc(toNumber(row)), c = Math.trunc(toNumber(col || 1));
+      if (r < 1 || r > tbl.length || c < 1 || c > tbl[0].length) throw new ExcelError('#REF!');
+      return tbl[r-1][c-1];
+    }
+    const list = Array.isArray(tbl) ? tbl : [tbl];
+    const i = Math.trunc(toNumber(row));
+    if (i < 1 || i > list.length) throw new ExcelError('#REF!');
+    return list[i-1];
+  },
+  EQUIV: (val, tbl, type) => {
+    const list = Array.isArray(tbl) ? flatten(tbl) : [tbl];
+    const t = Math.trunc(toNumber(type === undefined ? 1 : type));
+    if (t === 0) {
+      for (let i = 0; i < list.length; i++) if (valuesEqual(list[i], val)) return i+1;
+      throw new ExcelError('#N/A');
+    }
+    // TODO: t=1 / t=-1 partial implementation
+    throw new ExcelError('#N/A');
+  },
+  MATCH: (...a) => FN.EQUIV(...a),
+  GAUCHE: (s, n) => toText(s).slice(0, Math.trunc(toNumber(n === undefined ? 1 : n))),
+  LEFT: (...a) => FN.GAUCHE(...a),
+  DROITE: (s, n) => { const t = toText(s); const k = Math.trunc(toNumber(n === undefined ? 1 : n)); return k > 0 ? t.slice(-k) : ''; },
+  RIGHT: (...a) => FN.DROITE(...a),
+  STXT: (s, start, len) => toText(s).slice(Math.trunc(toNumber(start))-1, Math.trunc(toNumber(start))-1 + Math.trunc(toNumber(len))),
+  MID: (...a) => FN.STXT(...a),
+  NBCAR: (s) => toText(s).length,
+  LEN: (s) => FN.NBCAR(s),
+  CONCAT: (...a) => flatten(a).map(v => toText(v)).join(''),
+  CONCATENER: (...a) => FN.CONCAT(...a),
+  CONCATENATE: (...a) => FN.CONCAT(...a),
+  SUPPRESPACE: (s) => toText(s).replace(/\s+/g, ' ').trim(),
+  TRIM: (s) => FN.SUPPRESPACE(s),
+  MAJUSCULE: (s) => toText(s).toUpperCase(),
+  UPPER: (s) => FN.MAJUSCULE(s),
+  MINUSCULE: (s) => toText(s).toLowerCase(),
+  LOWER: (s) => FN.MINUSCULE(s),
+  NOMPROPRE: (s) => toText(s).replace(/\b\w/g, c => c.toUpperCase()).replace(/\B\w/g, c => c.toLowerCase()),
+  PROPER: (s) => FN.NOMPROPRE(s),
+  SUBSTITUE: (s, oldT, newT, occ) => {
+    const ss = toText(s), o = toText(oldT), n = toText(newT);
+    if (occ === undefined) return ss.split(o).join(n);
+    const k = Math.trunc(toNumber(occ));
+    let idx = -1;
+    for (let i = 0; i < k; i++) { idx = ss.indexOf(o, idx+1); if (idx === -1) return ss; }
+    return ss.slice(0, idx) + n + ss.slice(idx + o.length);
+  },
+  SUBSTITUTE: (...a) => FN.SUBSTITUE(...a),
+  TROUVE: (n, h, start) => { const i = toText(h).indexOf(toText(n), Math.trunc(toNumber(start || 1))-1); if (i === -1) throw new ExcelError('#VALEUR!'); return i+1; },
+  FIND: (...a) => FN.TROUVE(...a),
+  CHERCHE: (n, h, start) => { const hay = toText(h).toLowerCase(), nee = toText(n).toLowerCase(); const i = hay.indexOf(nee, Math.trunc(toNumber(start || 1))-1); if (i === -1) throw new ExcelError('#VALEUR!'); return i+1; },
+  SEARCH: (...a) => FN.CHERCHE(...a),
+  'GRANDE.VALEUR': (rng, k) => {
+    const n = numericValues(Array.isArray(rng) ? rng : [rng]);
+    if (!n.length) throw new ExcelError('#NOMBRE!');
+    const kk = Math.trunc(toNumber(k));
+    if (kk < 1 || kk > n.length) throw new ExcelError('#NOMBRE!');
+    return n.sort((a,b)=>b-a)[kk-1];
+  },
+  LARGE: (...a) => FN['GRANDE.VALEUR'](...a),
+  'PETITE.VALEUR': (rng, k) => {
+    const n = numericValues(Array.isArray(rng) ? rng : [rng]);
+    if (!n.length) throw new ExcelError('#NOMBRE!');
+    const kk = Math.trunc(toNumber(k));
+    if (kk < 1 || kk > n.length) throw new ExcelError('#NOMBRE!');
+    return n.sort((a,b)=>a-b)[kk-1];
+  },
+  SMALL: (...a) => FN['PETITE.VALEUR'](...a),
+  'RANG.EG': (val, rng, ordre) => {
+    const n = numericValues(Array.isArray(rng) ? rng : [rng]);
+    const v = toNumber(val);
+    if (!n.includes(v)) throw new ExcelError('#N/A');
+    const reverse = (ordre === undefined ? 0 : toNumber(ordre)) === 0;
+    const sorted = n.slice().sort((a,b) => reverse ? b-a : a-b);
+    return sorted.indexOf(v) + 1;
+  },
+  RANG: (...a) => FN['RANG.EG'](...a),
+  RANK: (...a) => FN['RANG.EG'](...a),
+  'RANK.EQ': (...a) => FN['RANG.EG'](...a),
+  SOMMEPROD: (...arrays) => {
+    if (!arrays.length) return 0;
+    const lists = arrays.map(a => flatten(Array.isArray(a) ? a : [a]));
+    if (lists.length === 1) {
+      return lists[0].reduce((s, v) => {
+        if (typeof v === 'boolean') return s + (v ? 1 : 0);
+        if (isNumeric(v)) return s + toNumber(v);
+        return s;
+      }, 0);
+    }
+    const n = lists[0].length;
+    for (const l of lists) if (l.length !== n) throw new ExcelError('#VALEUR!');
+    let total = 0;
+    for (let i = 0; i < n; i++) {
+      let prod = 1;
+      for (const l of lists) {
+        let v = l[i];
+        if (typeof v === 'boolean') v = v ? 1 : 0;
+        else if (v === null || v === '' || !isNumeric(v)) v = 0;
+        prod *= toNumber(v);
+      }
+      total += prod;
+    }
+    return total;
+  },
+  SUMPRODUCT: (...a) => FN.SOMMEPROD(...a),
+  AUJOURDHUI: () => { const d = new Date(); return Math.floor((d - new Date(1899,11,30))/86400000); },
+  TODAY: () => FN.AUJOURDHUI(),
+  ANNEE: (d) => excelDateToDate(d).getFullYear(),
+  YEAR: (d) => FN.ANNEE(d),
+  MOIS: (d) => excelDateToDate(d).getMonth() + 1,
+  MONTH: (d) => FN.MOIS(d),
+  JOUR: (d) => excelDateToDate(d).getDate(),
+  DAY: (d) => FN.JOUR(d),
+  DATEDIF: (d1, d2, unit) => {
+    const a = excelDateToDate(d1), b = excelDateToDate(d2);
+    if (b < a) throw new ExcelError('#NOMBRE!');
+    const u = toText(unit).toUpperCase();
+    if (u === 'Y') {
+      let y = b.getFullYear() - a.getFullYear();
+      if (b.getMonth() < a.getMonth() || (b.getMonth() === a.getMonth() && b.getDate() < a.getDate())) y--;
+      return y;
+    }
+    if (u === 'M') return (b.getFullYear()-a.getFullYear())*12 + b.getMonth()-a.getMonth() - (b.getDate()<a.getDate()?1:0);
+    if (u === 'D') return Math.floor((b-a)/86400000);
+    throw new ExcelError('#NOMBRE!');
+  },
+  'NB.JOURS.OUVRES': (d1, d2) => {
+    let a = excelDateToDate(d1), b = excelDateToDate(d2);
+    if (b < a) [a, b] = [b, a];
+    let count = 0;
+    const cur = new Date(a);
+    while (cur <= b) { if (cur.getDay() !== 0 && cur.getDay() !== 6) count++; cur.setDate(cur.getDate()+1); }
+    return count;
+  },
+  NETWORKDAYS: (...a) => FN['NB.JOURS.OUVRES'](...a),
+};
+function excelDateToDate(v) {
+  const n = toNumber(v);
+  return new Date(new Date(1899,11,30).getTime() + n*86400000);
+}
+
+const CONSTANTS = { VRAI: true, TRUE: true, FAUX: false, FALSE: false, PI: Math.PI };
+
+// --- Tokenizer ---
+const TOKEN_RE = /"([^"]|"")*"|\d+([.,]\d+)?([eE][+\-]?\d+)?|\$?[A-Za-z]+\$?\d+:\$?[A-Za-z]+\$?\d+|\$?[A-Za-z]+\$?\d+|[A-Za-zÀ-ÿ_][A-Za-zÀ-ÿ0-9_\.]*|<=|>=|<>|[+\-*/\^%&<>=]|\(|\)|[;,]|\s+/g;
+
+function tokenize(formula) {
+  let s = formula.trim();
+  if (s.startsWith('=')) s = s.slice(1);
+  const tokens = [];
+  TOKEN_RE.lastIndex = 0;
+  let m;
+  let lastEnd = 0;
+  while ((m = TOKEN_RE.exec(s)) !== null) {
+    if (m.index !== lastEnd) throw new ExcelError('#NOM?', 'Unexpected char at ' + m.index);
+    lastEnd = TOKEN_RE.lastIndex;
+    const val = m[0];
+    if (/^\s+$/.test(val)) continue;
+    if (val.startsWith('"')) tokens.push(['STRING', val.slice(1,-1).replace(/""/g,'"')]);
+    else if (/^\d/.test(val)) tokens.push(['NUMBER', val]);
+    else if (/\$?[A-Za-z]+\$?\d+:/.test(val)) tokens.push(['RANGE', val]);
+    else if (/^\$?[A-Za-z]+\$?\d+$/.test(val)) tokens.push(['CELL', val]);
+    else if (/^[A-Za-zÀ-ÿ_]/.test(val)) {
+      // peek to see if followed by (
+      let peek = lastEnd;
+      while (peek < s.length && /\s/.test(s[peek])) peek++;
+      if (s[peek] === '(') tokens.push(['FUNC', val]);
+      else tokens.push(['IDENT', val]);
+    }
+    else if (val === '(') tokens.push(['LPAREN', val]);
+    else if (val === ')') tokens.push(['RPAREN', val]);
+    else if (val === ';' || val === ',') tokens.push(['SEP', val]);
+    else tokens.push(['OP', val]);
+  }
+  if (lastEnd !== s.length) throw new ExcelError('#NOM?', 'Parse error at ' + lastEnd);
+  return tokens;
+}
+
+// --- Parser ---
+class Parser {
+  constructor(tokens) { this.t = tokens; this.i = 0; }
+  peek() { return this.t[this.i] || [null, null]; }
+  consume() { return this.t[this.i++]; }
+  expect(k) { const t = this.consume(); if (!t || t[0] !== k) throw new ExcelError('#NOM?'); return t; }
+  parse() { const e = this.parseComp(); if (this.i < this.t.length) throw new ExcelError('#NOM?'); return e; }
+  parseComp() {
+    let l = this.parseConcat();
+    while (this.peek()[0] === 'OP' && ['=','<>','<','>','<=','>='].includes(this.peek()[1])) {
+      const op = this.consume()[1], r = this.parseConcat();
+      l = ['BINOP', op, l, r];
+    } return l;
+  }
+  parseConcat() {
+    let l = this.parseAdd();
+    while (this.peek()[0] === 'OP' && this.peek()[1] === '&') { this.consume(); l = ['BINOP','&',l,this.parseAdd()]; }
+    return l;
+  }
+  parseAdd() {
+    let l = this.parseMul();
+    while (this.peek()[0] === 'OP' && ['+','-'].includes(this.peek()[1])) { const op=this.consume()[1]; l=['BINOP',op,l,this.parseMul()]; }
+    return l;
+  }
+  parseMul() {
+    let l = this.parseExp();
+    while (this.peek()[0] === 'OP' && ['*','/'].includes(this.peek()[1])) { const op=this.consume()[1]; l=['BINOP',op,l,this.parseExp()]; }
+    return l;
+  }
+  parseExp() {
+    let l = this.parseUnary();
+    if (this.peek()[0] === 'OP' && this.peek()[1] === '^') { this.consume(); l = ['BINOP','^',l,this.parseExp()]; }
+    return l;
+  }
+  parseUnary() {
+    if (this.peek()[0] === 'OP' && this.peek()[1] === '-') { this.consume(); return ['UNARY','-',this.parseUnary()]; }
+    if (this.peek()[0] === 'OP' && this.peek()[1] === '+') { this.consume(); return this.parseUnary(); }
+    return this.parsePct();
+  }
+  parsePct() {
+    const a = this.parseAtom();
+    if (this.peek()[0] === 'OP' && this.peek()[1] === '%') { this.consume(); return ['UNARY','%',a]; }
+    return a;
+  }
+  parseAtom() {
+    const [k, v] = this.peek();
+    if (k === 'NUMBER') { this.consume(); return ['NUM', parseFloat(v.replace(',','.'))]; }
+    if (k === 'STRING') { this.consume(); return ['STR', v]; }
+    if (k === 'LPAREN') { this.consume(); const e = this.parseComp(); this.expect('RPAREN'); return e; }
+    if (k === 'FUNC') {
+      this.consume(); this.expect('LPAREN');
+      const args = [];
+      if (this.peek()[0] !== 'RPAREN') {
+        args.push(this.parseComp());
+        while (this.peek()[0] === 'SEP') { this.consume(); args.push(this.parseComp()); }
+      }
+      this.expect('RPAREN');
+      return ['CALL', v.toUpperCase(), args];
+    }
+    if (k === 'RANGE') { this.consume(); return ['RANGE', v.toUpperCase()]; }
+    if (k === 'CELL') { this.consume(); return ['CELL', v.toUpperCase().replace(/\$/g,'')]; }
+    if (k === 'IDENT') {
+      this.consume();
+      const u = v.toUpperCase();
+      if (u in CONSTANTS) return ['CONST', CONSTANTS[u]];
+      throw new ExcelError('#NOM?', 'Unknown: ' + v);
+    }
+    throw new ExcelError('#NOM?');
+  }
+}
+
+// --- Context ---
+class Context {
+  constructor(cells) {
+    this.cells = {};
+    for (const k in cells) this.cells[k.toUpperCase()] = cells[k];
+  }
+  get(ref) {
+    const v = this.cells[ref.toUpperCase()];
+    return v === '' ? null : (v === undefined ? null : v);
+  }
+  getRange(rng) {
+    const m = rng.toUpperCase().replace(/\$/g,'').match(/^([A-Z]+)(\d+):([A-Z]+)(\d+)$/);
+    if (!m) throw new ExcelError('#REF!');
+    let ci1 = colLetterToIndex(m[1]), ci2 = colLetterToIndex(m[3]);
+    let ri1 = parseInt(m[2]), ri2 = parseInt(m[4]);
+    if (ci1 > ci2) [ci1, ci2] = [ci2, ci1];
+    if (ri1 > ri2) [ri1, ri2] = [ri2, ri1];
+    if (ri1 === ri2) {
+      const row = [];
+      for (let c = ci1; c <= ci2; c++) row.push(this.get(colIndexToLetter(c) + ri1));
+      return row;
+    }
+    if (ci1 === ci2) {
+      const col = [];
+      for (let r = ri1; r <= ri2; r++) col.push(this.get(colIndexToLetter(ci1) + r));
+      return col;
+    }
+    const rows = [];
+    for (let r = ri1; r <= ri2; r++) {
+      const row = [];
+      for (let c = ci1; c <= ci2; c++) row.push(this.get(colIndexToLetter(c) + r));
+      rows.push(row);
+    }
+    return rows;
+  }
+}
+
+// --- Evaluator ---
+function evalAst(node, ctx) {
+  const t = node[0];
+  if (t === 'NUM' || t === 'STR' || t === 'CONST') return node[1];
+  if (t === 'CELL') return ctx.get(node[1]);
+  if (t === 'RANGE') return ctx.getRange(node[1]);
+  if (t === 'UNARY') {
+    const v = evalAst(node[2], ctx);
+    if (node[1] === '-') return -toNumber(v);
+    if (node[1] === '%') return toNumber(v) / 100;
+    throw new ExcelError('#NOM?');
+  }
+  if (t === 'BINOP') {
+    const op = node[1];
+    const a = evalAst(node[2], ctx), b = evalAst(node[3], ctx);
+    if (op === '+') return toNumber(a) + toNumber(b);
+    if (op === '-') return toNumber(a) - toNumber(b);
+    if (op === '*') return toNumber(a) * toNumber(b);
+    if (op === '/') { const y = toNumber(b); if (y === 0) throw new ExcelError('#DIV/0!'); return toNumber(a)/y; }
+    if (op === '^') return Math.pow(toNumber(a), toNumber(b));
+    if (op === '&') return toText(a) + toText(b);
+    if (['=','<>','<','>','<=','>='].includes(op)) {
+      let x = a, y = b;
+      if (isNumeric(x) && isNumeric(y)) { x = toNumber(x); y = toNumber(y); }
+      else { x = toText(x).toUpperCase(); y = toText(y).toUpperCase(); }
+      return ({'=':x===y,'<>':x!==y,'<':x<y,'>':x>y,'<=':x<=y,'>=':x>=y})[op];
+    }
+    throw new ExcelError('#NOM?');
+  }
+  if (t === 'CALL') {
+    const name = node[1];
+    // Lazy eval for SIERREUR/SI
+    if (name === 'SIERREUR' || name === 'IFERROR') {
+      try { return evalAst(node[2][0], ctx); }
+      catch (e) { if (e instanceof ExcelError) return node[2].length > 1 ? evalAst(node[2][1], ctx) : 0; throw e; }
+    }
+    if (name === 'SI.NON.DISP' || name === 'IFNA') {
+      try { return evalAst(node[2][0], ctx); }
+      catch (e) { if (e instanceof ExcelError && e.code === '#N/A' && node[2].length > 1) return evalAst(node[2][1], ctx); throw e; }
+    }
+    if (name === 'SI' || name === 'IF') {
+      const c = toBool(evalAst(node[2][0], ctx));
+      if (c) return evalAst(node[2][1], ctx);
+      if (node[2].length > 2) return evalAst(node[2][2], ctx);
+      return false;
+    }
+    if (name === 'ET' || name === 'AND') { for (const a of node[2]) if (!toBool(evalAst(a, ctx))) return false; return true; }
+    if (name === 'OU' || name === 'OR') { for (const a of node[2]) if (toBool(evalAst(a, ctx))) return true; return false; }
+    if (!(name in FN)) throw new ExcelError('#NOM?', 'Unknown function: ' + name);
+    const args = node[2].map(a => evalAst(a, ctx));
+    return FN[name](...args);
+  }
+  throw new ExcelError('#NOM?');
+}
+
+function evaluate(formula, cells) {
+  if (!formula || !String(formula).trim()) return '';
+  const ctx = new Context(cells);
+  const tokens = tokenize(formula);
+  const ast = new Parser(tokens).parse();
+  return evalAst(ast, ctx);
+}
+
+function safeEvaluate(formula, cells) {
+  try { return [evaluate(formula, cells), null]; }
+  catch (e) { return [null, e instanceof ExcelError ? e.code : ('#ERREUR! ' + e.message)]; }
+}
+
+function valuesEquivalent(a, b, tol = 1e-6) {
+  if (a === null && (b === null || b === '' || b === undefined)) return true;
+  if (b === null && (a === null || a === '' || a === undefined)) return true;
+  if (typeof a === 'boolean' || typeof b === 'boolean') return toBool(a) === toBool(b);
+  if (isNumeric(a) && isNumeric(b)) return Math.abs(toNumber(a) - toNumber(b)) <= tol;
+  return toText(a).trim().toUpperCase() === toText(b).trim().toUpperCase();
+}
+
+// ===================================================================
+// MODULES DATA (abrégé pour la démo web)
+// ===================================================================
+const MODULES = [
+  {
+    id: 1, title: "Maîtrise de l'environnement Excel",
+    subtitle: "Raccourcis, références, navigation pro",
+    description: "Avant de devenir expert, il faut dominer la base. Ce module vous transforme en utilisateur fluide : raccourcis clavier, références relatives/absolues/mixtes.",
+    icon: "🎯", level: "Débutant", color: "#217346",
+    lessons: [
+      { title: "1.1 Les raccourcis clavier essentiels", content: `Un utilisateur Excel expert ne passe JAMAIS par la souris pour les actions fréquentes. Maîtriser les raccourcis divise votre temps de travail par 3.
+
+**NAVIGATION**
+• Ctrl + flèches : aller au bord d'une plage
+• Ctrl + Début : revenir en A1
+• Ctrl + Fin : dernière cellule utilisée
+
+**ÉDITION**
+• F2 : modifier la cellule active
+• F4 : basculer les références (A1 → $A$1 → A$1 → $A1)
+• Alt + = : insérer la somme automatique
+• Ctrl + ; : insérer la date du jour
+
+**MISE EN FORME**
+• Ctrl + 1 : boîte de dialogue Format de cellule
+• Ctrl + Maj + % : format pourcentage`,
+        tip: "La touche F4 pendant l'édition d'une formule est LA compétence qui sépare un débutant d'un expert." },
+      { title: "1.2 Références relatives, absolues, mixtes", content: `C'est LE concept fondamental d'Excel. Le comprendre évite 90 % des erreurs.
+
+**RÉFÉRENCE RELATIVE (A1)**
+Quand vous copiez la formule, la référence s'ajuste automatiquement.
+Exemple : en D2 vous tapez =B2*C2. Copié en D3 → devient =B3*C3.
+
+**RÉFÉRENCE ABSOLUE ($A$1)**
+Le $ « verrouille ». Peu importe où vous copiez, la référence ne bouge pas.
+Usage typique : un taux unique (TVA) placé dans une cellule et repris partout par =C2*$G$1.
+
+**RÉFÉRENCE MIXTE ($A1 ou A$1)**
+Verrouille UNIQUEMENT la colonne OU la ligne.
+Usage typique : une table de multiplication.`,
+        tip: "Mnémotechnique : le $ verrouille ce qui VIENT APRÈS. $A verrouille la colonne A, $1 verrouille la ligne 1." },
+    ],
+    exercises: [
+      { id: "M1E1", title: "Votre première formule",
+        statement: "Vous faites la liste des courses. En D2, calculez le total de la ligne : Quantité × Prix unitaire.",
+        initial_data: { A1:"Article",B1:"Quantité",C1:"Prix unitaire",D1:"Total", A2:"Cahiers",B2:5,C2:300 },
+        target_cell: "D2", expected_value: 1500,
+        patterns: [/^=B2\*C2$/i, /^=C2\*B2$/i],
+        hints: ["Multipliez la quantité par le prix unitaire.","L'opérateur de multiplication est * (astérisque).","La formule est =B2*C2"],
+        explanation: "Toute formule Excel commence par le signe =. Excel lit B2 (5), C2 (300) et retourne 1500.", xp: 10 },
+      { id: "M1E2", title: "La somme d'une liste",
+        statement: "Dans la cellule B7, calculez le total des dépenses de la semaine (plage B2:B6).",
+        initial_data: { A1:"Jour",B1:"Dépense",A2:"Lundi",B2:2500,A3:"Mardi",B3:1800,A4:"Mercredi",B4:3200,A5:"Jeudi",B5:1500,A6:"Vendredi",B6:4000,A7:"TOTAL" },
+        target_cell: "B7", expected_value: 13000,
+        patterns: [/^=SOMME\(B2:B6\)$/i, /^=B2\+B3\+B4\+B5\+B6$/i],
+        hints: ["La fonction SOMME additionne toute une plage.","Syntaxe : =SOMME(première:dernière)","=SOMME(B2:B6)"],
+        explanation: "=SOMME(B2:B6) additionne toutes les cellules de B2 à B6. Plus rapide et plus fiable.", xp: 10 },
+      { id: "M1E3", title: "Remise 10 % avec référence absolue",
+        statement: "Un magasin fait 10 % de remise. Le taux est en G1 (0,10). En D2, calculez la remise. Verrouillez G1 avec $.",
+        initial_data: { A1:"Article",B1:"Prix",C1:"Qté",D1:"Remise",A2:"Livre",B2:5000,C2:2,F1:"Taux :",G1:0.10 },
+        target_cell: "D2", expected_value: 1000,
+        patterns: [/^=B2\*C2\*\$G\$1$/i, /^=\$G\$1\*B2\*C2$/i, /^=C2\*B2\*\$G\$1$/i, /^=B2\*\$G\$1\*C2$/i],
+        mustContain: ["$G$1"],
+        hints: ["Remise = Prix × Quantité × Taux","Le taux en G1 doit être verrouillé : $G$1","Astuce : tapez G1 puis F4","=B2*C2*$G$1"],
+        explanation: "Avec $G$1, copiée en D3 la formule deviendra =B3*C3*$G$1 : le taux reste en G1.", xp: 12 },
+      { id: "M1E4", title: "Table de multiplication (mixte)",
+        statement: "Vous construisez une table de multiplication. En B3, une formule copiable partout.",
+        initial_data: { A1:"×",B2:1,C2:2,D2:3,E2:4,F2:5,A3:1,A4:2,A5:3,A6:4,A7:5 },
+        target_cell: "B3", expected_value: 1,
+        patterns: [/^=\$A3\*B\$2$/i, /^=B\$2\*\$A3$/i],
+        mustContain: ["$A3","B$2"],
+        hints: ["Le chiffre de LIGNE est en A3,A4... → $A3","Le chiffre de COLONNE est en B2,C2... → B$2","=$A3*B$2"],
+        explanation: "Mixtes : $A3 colonne verrouillée, B$2 ligne verrouillée. Copiée dans toute la grille ça marche.", xp: 14 },
+      { id: "M1E5", title: "Calcul d'une moyenne",
+        statement: "Un élève a 4 notes. En B6, calculez sa moyenne.",
+        initial_data: { A1:"Matière",B1:"Note",A2:"Maths",B2:14,A3:"Français",B3:12,A4:"Anglais",B4:16,A5:"Sciences",B5:10,A6:"MOYENNE" },
+        target_cell: "B6", expected_value: 13,
+        patterns: [/^=MOYENNE\(B2:B5\)$/i, /^=SOMME\(B2:B5\)\/4$/i],
+        hints: ["La fonction MOYENNE calcule la moyenne arithmétique.","=MOYENNE(B2:B5)"],
+        explanation: "=MOYENNE(B2:B5) additionne les 4 notes et divise par 4 = 13.", xp: 10 },
+      { id: "M1E6", title: "Budget personnel",
+        statement: "Vous gagnez 250 000, dépensé 180 000. En B4, combien reste-t-il ?",
+        initial_data: { A1:"Poste",B1:"Montant",A2:"Revenus",B2:250000,A3:"Dépenses",B3:180000,A4:"Reste" },
+        target_cell: "B4", expected_value: 70000,
+        patterns: [/^=B2\-B3$/],
+        hints: ["Reste = Revenus − Dépenses","=B2-B3"],
+        explanation: "Soustraction directe : 250000 - 180000 = 70000.", xp: 10 },
+      { id: "M1E7", title: "Prix de vente avec marge",
+        statement: "Achat 3 000. Marge 25 % (en F1). En C2, calculez le prix = Coût × (1 + Marge).",
+        initial_data: { A1:"Article",B1:"Coût",C1:"Prix",A2:"Sac",B2:3000,E1:"Marge :",F1:0.25 },
+        target_cell: "C2", expected_value: 3750,
+        patterns: [/^=B2\*\(1\+\$F\$1\)$/i, /^=\(1\+\$F\$1\)\*B2$/i, /^=B2\+B2\*\$F\$1$/i],
+        mustContain: ["$F$1"],
+        hints: ["Prix = Coût × (1 + Marge). Parenthèses essentielles !","=B2*(1+$F$1)"],
+        explanation: "Les parenthèses FORCENT 1+0,25=1,25 AVANT la multiplication.", xp: 12 },
+      { id: "M1E8", title: "Variation entre 2 valeurs",
+        statement: "L'équipe a marqué 18 buts l'an dernier, 27 cette saison. En B4, calculez la variation %.",
+        initial_data: { A1:"Saison",B1:"Buts",A2:"2024",B2:18,A3:"2025",B3:27,A4:"Variation" },
+        target_cell: "B4", expected_value: 0.5,
+        patterns: [/^=\(B3\-B2\)\/B2$/, /^=B3\/B2\-1$/],
+        hints: ["Formule : (Nouveau − Ancien) / Ancien","=(B3-B2)/B2"],
+        explanation: "0,5 = +50 %. Pour afficher en %, Ctrl+Maj+%.", xp: 12 },
+      { id: "M1E9", title: "Trouver la meilleure note",
+        statement: "Parmi 5 notes, en B8 trouvez la NOTE LA PLUS ÉLEVÉE.",
+        initial_data: { A1:"Matière",B1:"Note",A2:"Maths",B2:11,A3:"Français",B3:15,A4:"Anglais",B4:9,A5:"Histoire",B5:17,A6:"Sport",B6:13,A8:"Meilleure :" },
+        target_cell: "B8", expected_value: 17,
+        patterns: [/^=MAX\(B2:B6\)$/i],
+        hints: ["La fonction MAX retourne la plus grande.","=MAX(B2:B6)"],
+        explanation: "MAX trouve la plus grande valeur. MIN fait l'inverse.", xp: 10 },
+      { id: "M1E10", title: "Concaténer : nom complet",
+        statement: 'En C2, fusionnez prénom et nom : "Prénom NOM". Utilisez & et n\'oubliez pas l\'espace !',
+        initial_data: { A1:"Prénom",B1:"Nom",C1:"Nom complet",A2:"Aïcha",B2:"TRAORÉ" },
+        target_cell: "C2", expected_value: "Aïcha TRAORÉ",
+        patterns: [/^=A2&" "&B2$/i, /^=CONCAT\(A2;" ";B2\)$/i],
+        hints: ["L'opérateur & concatène.","N'oubliez pas l'espace : \" \"","=A2&\" \"&B2"],
+        explanation: "& assemble : contenu A2 + espace + contenu B2. Les \" \" délimitent le texte.", xp: 10 },
+    ],
+  },
+  {
+    id: 2, title: "Fonctions logiques et conditionnelles",
+    subtitle: "SI, ET, OU, SIERREUR, SI.CONDITIONS",
+    description: "La logique, c'est le cerveau d'Excel. Faire prendre des décisions : admis/refusé, majeur/mineur...",
+    icon: "🧠", level: "Débutant → Intermédiaire", color: "#107C41",
+    lessons: [
+      { title: "2.1 La fonction SI", content: `Syntaxe : =SI(test ; valeur_si_vrai ; valeur_si_faux)
+
+Excel évalue le test. VRAI → 2e valeur. FAUX → 3e valeur.
+
+**Opérateurs**
+• = égal  • <> différent  • > supérieur  • < inférieur
+• >= supérieur ou égal  • <= inférieur ou égal
+
+**Exemples**
+=SI(A2>=10;"Admis";"Refusé")
+=SI(B2="VIP";C2*0,9;C2)
+
+NOTE : séparateur = ; en français.`, tip: "Mettez toujours les 3 arguments pour la lisibilité." },
+      { title: "2.2 ET, OU, NON", content: `ET(cond1;cond2;...) → VRAI si TOUTES vraies
+OU(cond1;cond2;...) → VRAI si AU MOINS UNE vraie
+NON(cond) → inverse
+
+**Exemples**
+=SI(ET(A2>=18;B2="Oui");"Peut voter";"Ne peut pas")
+=SI(OU(C2="Samedi";C2="Dimanche");"Week-end";"Semaine")`,
+        tip: "Préférez ET() à l'imbrication multiple de SI." },
+    ],
+    exercises: [
+      { id: "M2E1", title: "SI basique : Admis/Refusé",
+        statement: 'En C2, affichez "Admis" si la note ≥ 10, sinon "Refusé".',
+        initial_data: { A1:"Élève",B1:"Note /20",C1:"Résultat",A2:"Moussa",B2:13 },
+        target_cell: "C2", expected_value: "Admis",
+        patterns: [/^=SI\(B2>=10;"Admis";"Refusé"\)$/i, /^=SI\(B2<10;"Refusé";"Admis"\)$/i],
+        mustContain: ["SI("],
+        hints: ['Syntaxe : =SI(test;vrai;faux)','Le test : B2>=10','=SI(B2>=10;"Admis";"Refusé")'],
+        explanation: 'SI évalue B2>=10. VRAI → "Admis".', xp: 10 },
+      { id: "M2E2", title: "Remise si gros achat",
+        statement: 'Remise de 5% si commande > 50 000. En C2 calculez la remise (0 sinon).',
+        initial_data: { A1:"Client",B1:"Montant",C1:"Remise",A2:"Sophie",B2:75000 },
+        target_cell: "C2", expected_value: 3750,
+        patterns: [/^=SI\(B2>50000;B2\*0,05;0\)$/i, /^=SI\(B2>=50000;B2\*0,05;0\)$/i],
+        mustContain: ["SI("],
+        hints: ['Si B2>50000 alors 5% de B2, sinon 0.','=SI(B2>50000;B2*0,05;0)'],
+        explanation: 'Test VRAI (75000 > 50000) → calcule 75000*0,05 = 3750.', xp: 12 },
+      { id: "M2E3", title: "Majeur ou Mineur ?",
+        statement: 'En C2, "Majeur" si âge ≥ 18, sinon "Mineur".',
+        initial_data: { A1:"Prénom",B1:"Âge",C1:"Statut",A2:"Fatou",B2:22 },
+        target_cell: "C2", expected_value: "Majeur",
+        patterns: [/^=SI\(B2>=18;"Majeur";"Mineur"\)$/i, /^=SI\(B2<18;"Mineur";"Majeur"\)$/i],
+        mustContain: ["SI("],
+        hints: ['Test : B2>=18','=SI(B2>=18;"Majeur";"Mineur")'],
+        explanation: 'Comparaison numérique. Pas de guillemets autour de 18.', xp: 10 },
+      { id: "M2E4", title: "SI imbriqués : mentions",
+        statement: 'Note ≥ 16 → "Très Bien" ; ≥14 → "Bien" ; ≥12 → "Assez Bien" ; ≥10 → "Passable" ; sinon "Refusé".',
+        initial_data: { A1:"Candidat",B1:"Note",C1:"Mention",A2:"Awa",B2:15.5 },
+        target_cell: "C2", expected_value: "Bien",
+        patterns: [/^=SI\(B2>=16;"Très Bien";SI\(B2>=14;"Bien";SI\(B2>=12;"Assez Bien";SI\(B2>=10;"Passable";"Refusé"\)\)\)\)$/i],
+        hints: ["Commencez par le seuil le plus HAUT (16).","Imbriquez : =SI(B2>=16;\"TB\"; SI(B2>=14;\"B\"; ...))",
+          '=SI(B2>=16;"Très Bien";SI(B2>=14;"Bien";SI(B2>=12;"Assez Bien";SI(B2>=10;"Passable";"Refusé"))))'],
+        explanation: 'Test 16 faux, test 14 VRAI → "Bien". ORDRE CRUCIAL : du plus haut au plus bas.', xp: 15 },
+      { id: "M2E5", title: "ET : peut voter ?",
+        statement: 'Voter = majeur ET inscrit ("Oui"). En D2, "Peut voter" si les DEUX sont vrais.',
+        initial_data: { A1:"Nom",B1:"Âge",C1:"Inscrit",D1:"Résultat",A2:"Jean",B2:25,C2:"Oui" },
+        target_cell: "D2", expected_value: "Peut voter",
+        patterns: [/^=SI\(ET\(B2>=18;C2="Oui"\);"Peut voter";"Ne peut pas"\)$/i, /^=SI\(ET\(C2="Oui";B2>=18\);"Peut voter";"Ne peut pas"\)$/i],
+        mustContain: ["ET("],
+        hints: ["ET() combine plusieurs conditions.",'=SI(ET(B2>=18;C2="Oui");"Peut voter";"Ne peut pas")'],
+        explanation: 'ET = VRAI si TOUTES vraies. Ici 25>=18 ET C2="Oui" sont vrais.', xp: 13 },
+      { id: "M2E6", title: "OU : week-end ?",
+        statement: 'En B2, "Week-end" si jour = Samedi OU Dimanche, sinon "Semaine".',
+        initial_data: { A1:"Jour",B1:"Type",A2:"Samedi" },
+        target_cell: "B2", expected_value: "Week-end",
+        patterns: [/^=SI\(OU\(A2="Samedi";A2="Dimanche"\);"Week-end";"Semaine"\)$/i, /^=SI\(OU\(A2="Dimanche";A2="Samedi"\);"Week-end";"Semaine"\)$/i],
+        mustContain: ["OU("],
+        hints: ["OU = VRAI si au moins UNE vraie.",'=SI(OU(A2="Samedi";A2="Dimanche");"Week-end";"Semaine")'],
+        explanation: 'A2="Samedi" est vrai → OU vrai → "Week-end".', xp: 12 },
+      { id: "M2E7", title: "Bonus si objectif atteint",
+        statement: 'Bonus 10% du CA si > 100 000. En C2, calculez le bonus (0 sinon).',
+        initial_data: { A1:"Vendeur",B1:"CA réalisé",C1:"Bonus",A2:"Nadia",B2:150000 },
+        target_cell: "C2", expected_value: 15000,
+        patterns: [/^=SI\(B2>100000;B2\*0,1;0\)$/i, /^=SI\(B2>=100000;B2\*0,1;0\)$/i, /^=SI\(B2>100000;B2\*10%;0\)$/i],
+        mustContain: ["SI("],
+        hints: ["10% s'écrit 0,1","=SI(B2>100000;B2*0,1;0)"],
+        explanation: 'Combine condition + calcul. 150000>100000 → 15000.', xp: 12 },
+      { id: "M2E8", title: "Tarif cinéma selon âge",
+        statement: '<12→1500 ; <18→2500 ; <60→3500 ; sinon→2000. Affichez le tarif en C2.',
+        initial_data: { A1:"Nom",B1:"Âge",C1:"Tarif",A2:"Mamadou",B2:14 },
+        target_cell: "C2", expected_value: 2500,
+        patterns: [/^=SI\(B2<12;1500;SI\(B2<18;2500;SI\(B2<60;3500;2000\)\)\)$/i,
+                   /^=SI\.CONDITIONS\(B2<12;1500;B2<18;2500;B2<60;3500;VRAI;2000\)$/i],
+        hints: ["Commencez par 12. Structure : =SI(B2<12;1500;SI(B2<18;2500;...))",
+                "=SI(B2<12;1500;SI(B2<18;2500;SI(B2<60;3500;2000)))"],
+        explanation: '14 ans : B2<12 faux, B2<18 VRAI → 2500. Pas de guillemets pour les nombres.', xp: 15 },
+      { id: "M2E9", title: "SI.CONDITIONS : feu tricolore",
+        statement: '"Rouge"→"Stop" ; "Orange"→"Ralentir" ; "Vert"→"Passer". Utilisez SI.CONDITIONS.',
+        initial_data: { A1:"Feu",B1:"Action",A2:"Orange" },
+        target_cell: "B2", expected_value: "Ralentir",
+        patterns: [/^=SI\.CONDITIONS\(A2="Rouge";"Stop";A2="Orange";"Ralentir";A2="Vert";"Passer"\)$/i,
+                   /^=SI\(A2="Rouge";"Stop";SI\(A2="Orange";"Ralentir";SI\(A2="Vert";"Passer";""\)\)\)$/i],
+        hints: ["SI.CONDITIONS prend des paires (condition;valeur).",
+                '=SI.CONDITIONS(A2="Rouge";"Stop";A2="Orange";"Ralentir";A2="Vert";"Passer")'],
+        explanation: 'SI.CONDITIONS teste chaque paire. Plus lisible que 3 SI imbriqués.', xp: 13 },
+      { id: "M2E10", title: "SIERREUR",
+        statement: 'En C2 calculez A2/B2. Si B2=0, affichez "Division impossible".',
+        initial_data: { A1:"Total",B1:"Nombre",C1:"Moyenne",A2:100,B2:0 },
+        target_cell: "C2", expected_value: "Division impossible",
+        patterns: [/^=SIERREUR\(A2\/B2;"Division impossible"\)$/i],
+        mustContain: ["SIERREUR("],
+        hints: ["SIERREUR(formule;valeur_si_erreur)",'=SIERREUR(A2/B2;"Division impossible")'],
+        explanation: 'Sans SIERREUR → #DIV/0!. SIERREUR capture et affiche le message.', xp: 13 },
+    ],
+  },
+  // Les autres modules (3-12) ont leur structure : titre, description, 1 exercice démo
+  // Le ZIP Python complet contient les 10 exercices de chaque module
+  ...[
+    { id: 3, title: "Fonctions de recherche", subtitle: "RECHERCHEV, INDEX+EQUIV, RECHERCHEX",
+      description: "Le pouvoir de retrouver une info dans un grand tableau.", icon: "🔍", level: "Intermédiaire", color: "#4472C4",
+      demo: { id: "M3E1", title: "RECHERCHEV : trouver un prix",
+        statement: "Dans E2:F5, en C2 retrouvez le prix du produit en B2 (P002).",
+        initial_data: { A1:"Client",B1:"Code",C1:"Prix",A2:"A",B2:"P002",E1:"Code",F1:"Prix",E2:"P001",F2:1500,E3:"P002",F3:2800,E4:"P003",F4:950,E5:"P004",F5:4200 },
+        target_cell: "C2", expected_value: 2800,
+        patterns: [/^=RECHERCHEV\(B2;E2:F5;2;FAUX\)$/i],
+        mustContain: ["RECHERCHEV("],
+        hints: ["=RECHERCHEV(valeur;table;colonne;FAUX)","=RECHERCHEV(B2;E2:F5;2;FAUX)"],
+        explanation: "Excel cherche P002 dans E, renvoie colonne 2 : 2800.", xp: 15 } },
+    { id: 4, title: "Fonctions texte et date", subtitle: "Manipulation de chaînes, dates",
+      description: "Extraire, nettoyer, calculer un âge.", icon: "📝", level: "Intermédiaire", color: "#B7472A",
+      demo: { id: "M4E1", title: "Extraire l'initiale",
+        statement: "En C2, extrayez la première lettre du prénom avec GAUCHE.",
+        initial_data: { A1:"Nom",B1:"Prénom",C1:"Initiale",A2:"KONE",B2:"Fatou" },
+        target_cell: "C2", expected_value: "F",
+        patterns: [/^=GAUCHE\(B2;1\)$/i],
+        mustContain: ["GAUCHE("],
+        hints: ["GAUCHE(texte;nombre)","=GAUCHE(B2;1)"],
+        explanation: "GAUCHE extrait les premiers caractères.", xp: 10 } },
+    { id: 5, title: "Formules d'analyse & MFC", subtitle: "Détecter, classer, comparer",
+      description: "Compter doublons, classer, trouver les extrêmes.", icon: "🎨", level: "Intermédiaire", color: "#7030A0",
+      demo: { id: "M5E1", title: "NB.SI : compter les admis",
+        statement: "En B8, comptez les élèves admis (note ≥ 10) avec NB.SI.",
+        initial_data: { A1:"Élève",B1:"Note",A2:"Alice",B2:14,A3:"Bruno",B3:8,A4:"Chloé",B4:16,A5:"David",B5:5,A6:"Emma",B6:12,A8:"Admis :" },
+        target_cell: "B8", expected_value: 3,
+        patterns: [/^=NB\.SI\(B2:B6;">=10"\)$/i],
+        mustContain: ["NB.SI("],
+        hints: ['NB.SI(plage;critère)','=NB.SI(B2:B6;">=10")'],
+        explanation: "3 élèves ont ≥10 : Alice, Chloé, Emma.", xp: 13 } },
+    { id: 6, title: "Tableaux croisés dynamiques", subtitle: "Synthétiser des milliers de lignes",
+      description: "Comprendre et reproduire la logique d'un TCD.", icon: "📊", level: "Avancé", color: "#E67E22",
+      demo: { id: "M6E1", title: "TCD manuel : somme par catégorie",
+        statement: 'En E2, calculez le total "Fruits" avec SOMME.SI.',
+        initial_data: { A1:"Catégorie",B1:"Vente",A2:"Fruits",B2:1500,A3:"Légumes",B3:2000,A4:"Fruits",B4:800,A5:"Légumes",B5:1200,A6:"Fruits",B6:1800,D1:"Cat.",E1:"Total",D2:"Fruits" },
+        target_cell: "E2", expected_value: 4100,
+        patterns: [/^=SOMME\.SI\(A2:A6;D2;B2:B6\)$/i, /^=SOMME\.SI\(A2:A6;"Fruits";B2:B6\)$/i],
+        mustContain: ["SOMME.SI("],
+        hints: ["SOMME.SI(plage_crit;critère;plage_somme)","=SOMME.SI(A2:A6;D2;B2:B6)"],
+        explanation: "1500+800+1800=4100. Ce qu'un TCD fait en un clic.", xp: 15 } },
+    { id: 7, title: "Graphiques & Dashboards", subtitle: "Préparer les données, construire KPI",
+      description: "Formules pour variations, cumuls, KPI.", icon: "📈", level: "Avancé", color: "#C0392B",
+      demo: { id: "M7E1", title: "Parts % pour un camembert",
+        statement: "En C2, calculez la PART en % de chaque produit.",
+        initial_data: { A1:"Produit",B1:"Vente",C1:"Part",A2:"Pomme",B2:300,A3:"Banane",B3:500,A4:"Orange",B4:200,A5:"TOTAL",B5:1000 },
+        target_cell: "C2", expected_value: 0.3,
+        patterns: [/^=B2\/\$B\$5$/],
+        mustContain: ["$B$5"],
+        hints: ["Part = valeur / total","=B2/$B$5"],
+        explanation: "0,30 = 30 %. $B$5 verrouillé pour recopier.", xp: 12 } },
+    { id: 8, title: "Power Query : nettoyer", subtitle: "Imports automatisés",
+      description: "Nettoyage de données par formules équivalentes.", icon: "⚡", level: "Expert", color: "#16A085",
+      demo: { id: "M8E1", title: "Nettoyer les espaces",
+        statement: "En C2, nettoyez le nom avec SUPPRESPACE.",
+        initial_data: { A1:"Source",B1:"Brut",C1:"Propre",A2:"csv",B2:"  Zinedine    ZIDANE  " },
+        target_cell: "C2", expected_value: "Zinedine ZIDANE",
+        patterns: [/^=SUPPRESPACE\(B2\)$/i],
+        mustContain: ["SUPPRESPACE("],
+        hints: ["=SUPPRESPACE(B2)"],
+        explanation: "Équivalent PQ : Transformer → Supprimer les espaces.", xp: 10 } },
+    { id: 9, title: "Power Pivot & DAX", subtitle: "Mesures, SOMMEPROD, calculs avancés",
+      description: "Analyse multi-tables et formules DAX-like.", icon: "🔗", level: "Expert", color: "#34495E",
+      demo: { id: "M9E1", title: "Moyenne pondérée",
+        statement: "En D2, calculez la moyenne pondérée avec SOMMEPROD.",
+        initial_data: { A1:"Matière",B1:"Note",C1:"Coef",A2:"Maths",B2:14,C2:4,A3:"Français",B3:12,C3:3,A4:"Sport",B4:16,C4:1,D1:"Moy. pond." },
+        target_cell: "D2", expected_value: 13.5,
+        patterns: [/^=SOMMEPROD\(B2:B4;C2:C4\)\/SOMME\(C2:C4\)$/i],
+        mustContain: ["SOMMEPROD(","SOMME("],
+        hints: ["SOMMEPROD(Notes;Coefs) / SOMME(Coefs)","=SOMMEPROD(B2:B4;C2:C4)/SOMME(C2:C4)"],
+        explanation: "(14*4+12*3+16*1)/8 = 108/8 = 13,5.", xp: 20 } },
+    { id: 10, title: "Introduction à VBA", subtitle: "Variables, conditions, boucles",
+      description: "Comprendre VBA via ses équivalents formule.", icon: "💻", level: "Expert", color: "#8E44AD",
+      demo: { id: "M10E1", title: "Équivalent d'une boucle For",
+        statement: "En B7, somme des ventes (équivalent For VBA).",
+        initial_data: { A1:"Jour",B1:"Vente",A2:"Lun",B2:300,A3:"Mar",B3:450,A4:"Mer",B4:200,A5:"Jeu",B5:600,A6:"Ven",B6:350,A7:"Total" },
+        target_cell: "B7", expected_value: 1900,
+        patterns: [/^=SOMME\(B2:B6\)$/i],
+        mustContain: ["SOMME("],
+        hints: ["=SOMME(B2:B6)"],
+        explanation: "VBA : For i=2 To 6: total=total+Cells(i,2).Value. SOMME fait ça nativement.", xp: 10 } },
+    { id: 11, title: "VBA avancé", subtitle: "Formulaires, événements, UDF",
+      description: "Techniques avancées : validation multi-champs, clés composites.", icon: "🚀", level: "Expert", color: "#2C3E50",
+      demo: { id: "M11E1", title: "Validation multi-champs",
+        statement: 'En D2, "Complet" si A2, B2, C2 tous remplis, sinon "Incomplet".',
+        initial_data: { A1:"Nom",B1:"Prénom",C1:"Email",D1:"Validation",A2:"MARTIN",B2:"Pierre",C2:"pierre@ex.com" },
+        target_cell: "D2", expected_value: "✓ Complet",
+        patterns: [/^=SI\(ET\(A2<>"";B2<>"";C2<>""\);"✓ Complet";"✗ Incomplet"\)$/i],
+        mustContain: ["ET(","SI("],
+        hints: ['ET teste plusieurs conditions ; chacune A2<>""','=SI(ET(A2<>"";B2<>"";C2<>"");"✓ Complet";"✗ Incomplet")'],
+        explanation: "Équivalent VBA : If TextBox1<>\"\" And TextBox2<>\"\" ...", xp: 20 } },
+    { id: 12, title: "Projet final intégratif", subtitle: "Appliquer toutes les compétences",
+      description: "Combiner plusieurs notions dans des formules puissantes.", icon: "🏆", level: "Expert", color: "#F39C12",
+      demo: { id: "M12E1", title: "Facture avec remise conditionnelle",
+        statement: "Si sous-total (D2) > 10 000, remise 10%. TVA 20%. Calculez le TTC en F2.",
+        initial_data: { A1:"Article",B1:"Qté",C1:"Prix",D1:"Sous-total",E1:"Remise ?",F1:"TTC",A2:"Laptop",B2:3,C2:5000,D2:15000 },
+        target_cell: "F2", expected_value: 16200,
+        patterns: [/^=SI\(D2>10000;D2\*0,9;D2\)\*1,2$/i],
+        mustContain: ["SI("],
+        hints: ["1. SI remise, 2. × 1,2","=SI(D2>10000;D2*0,9;D2)*1,2"],
+        explanation: "15000>10000 → remise → 13500 × 1,2 = 16200.", xp: 22 } },
+  ].map(m => ({ ...m, lessons: [{ title: "Leçon", content: m.description + "\n\n(Contenu pédagogique complet dans le ZIP Python.)", tip: "Cette version web est une démo : le ZIP Python contient 10 exercices par module + cours DOCX illustré." }], exercises: [m.demo] })),
+];
+
+// ===================================================================
+// ÉTAT DE L'APPLICATION
+// ===================================================================
+const APP = {
+  user: null,
+  currentScreen: 'login',
+  currentModule: null,
+  currentExerciseIdx: 0,
+  hintsShown: 0,
+  attempts: 0,
+  gridActiveCell: 'A1',
+  gridTargetCell: null,
+  gridCells: {},
+  gridLocked: new Set(),
+};
+
+// LocalStorage helpers
+const STORAGE_KEY = 'excelmaster_users';
+function loadUsers() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveUsers(u) { localStorage.setItem(STORAGE_KEY, JSON.stringify(u)); }
+function getUser(name) { return loadUsers()[name]; }
+function saveUser(user) {
+  const all = loadUsers();
+  all[user.username] = user;
+  saveUsers(all);
+}
+function allStudents() {
+  const all = loadUsers();
+  return Object.values(all).filter(u => u.role === 'student').sort((a,b) => b.total_xp - a.total_xp);
+}
+
+// ===================================================================
+// LOGIC
+// ===================================================================
+function createUser(username, fullName, password, role = 'student', classGroup = '') {
+  const users = loadUsers();
+  if (users[username]) return null;
+  const u = {
+    username, full_name: fullName, class_group: classGroup,
+    role, password_hash: btoa(password), // démo seulement (pas cryptographique)
+    total_xp: 0, level: 1, progress: {}, badges: [],
+    created_at: new Date().toISOString(),
+  };
+  saveUser(u);
+  return u;
+}
+function authenticate(username, password) {
+  const u = getUser(username);
+  if (!u || u.password_hash !== btoa(password)) return null;
+  return u;
+}
+function updateXP(user, delta) {
+  user.total_xp = Math.max(0, user.total_xp + delta);
+  user.level = Math.min(50, 1 + Math.floor(user.total_xp / 100));
+  saveUser(user);
+}
+function recordAttempt(user, moduleId, exerciseId, success, xpEarned, hintsUsed) {
+  const prog = user.progress[exerciseId] || { status: 'in_progress', attempts: 0, xp_earned: 0, hints_used: 0 };
+  prog.attempts += 1;
+  prog.hints_used += hintsUsed;
+  prog.module_id = moduleId;
+  if (success && prog.status !== 'completed') {
+    prog.status = 'completed';
+    prog.xp_earned = xpEarned;
+    prog.completed_at = new Date().toISOString();
+  }
+  user.progress[exerciseId] = prog;
+  saveUser(user);
+}
+function getModuleProgress(user, moduleId) {
+  const completed = Object.values(user.progress || {})
+    .filter(p => p.module_id === moduleId && p.status === 'completed').length;
+  const total = MODULES.find(m => m.id === moduleId).exercises.length;
+  return { completed, total };
+}
+function moduleIsUnlocked(user, moduleId) {
+  if (user.role === 'teacher' || moduleId <= 1) return true;
+  const prev = getModuleProgress(user, moduleId - 1);
+  if (prev.total === 0) return true;
+  return (prev.completed / prev.total) >= 0.7;
+}
+function awardBadge(user, code) {
+  if (user.badges.includes(code)) return false;
+  user.badges.push(code);
+  saveUser(user);
+  return true;
+}
+function checkBadges(user, moduleId) {
+  const completed = Object.values(user.progress || {}).filter(p => p.status === 'completed').length;
+  const newBadges = [];
+  const milestones = [
+    [1, 'FIRST_STEP', '🌱', 'Premier pas'],
+    [5, 'FIVE', '⭐', '5 exercices !'],
+    [10, 'TEN', '⭐⭐', '10 exercices !'],
+    [25, 'TWENTY_FIVE', '🏅', '25 exercices !'],
+    [50, 'FIFTY', '🏆', '50 exercices !'],
+    [100, 'HUNDRED', '👑', '100 exercices !'],
+  ];
+  for (const [n, code, icon, name] of milestones) {
+    if (completed >= n && awardBadge(user, code)) {
+      newBadges.push({ code, icon, name });
+    }
+  }
+  // Module complete
+  const mp = getModuleProgress(user, moduleId);
+  if (mp.completed >= mp.total) {
+    const code = `MOD${moduleId}_MASTER`;
+    if (awardBadge(user, code)) {
+      newBadges.push({ code, icon: '🎖️', name: `Module ${moduleId} terminé` });
+    }
+  }
+  return newBadges;
+}
+
+// ===================================================================
+// RENDERING
+// ===================================================================
+const $ = (sel) => document.querySelector(sel);
+const h = (tag, attrs = {}, ...children) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') el.className = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v);
+  }
+  for (const c of children) {
+    if (c === null || c === undefined || c === false) continue;
+    if (Array.isArray(c)) c.forEach(cc => el.appendChild(typeof cc === 'string' ? document.createTextNode(cc) : cc));
+    else el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return el;
+};
+
+function render() {
+  const app = $('#app');
+  app.innerHTML = '';
+  if (APP.currentScreen === 'login') app.appendChild(renderLogin());
+  else if (APP.currentScreen === 'home') app.appendChild(renderHome());
+  else if (APP.currentScreen === 'lesson') app.appendChild(renderLesson());
+  else if (APP.currentScreen === 'exercise') app.appendChild(renderExercise());
+  else if (APP.currentScreen === 'leaderboard') app.appendChild(renderLeaderboard());
+}
+
+// --- LOGIN ---
+function renderLogin() {
+  const screen = h('div', { id: 'login-screen' });
+  const card = h('div', { class: 'login-card' });
+
+  card.appendChild(h('div', { class: 'login-logo' }, '📊'));
+  card.appendChild(h('div', { class: 'login-title' }, 'ExcelMaster'));
+  card.appendChild(h('div', { class: 'login-tagline' }, 'Formation Excel Débutant → Expert'));
+
+  // Tabs
+  let activeTab = 'connect';
+  const tabs = h('div', { class: 'login-tabs' });
+  const btnConn = h('button', { class: 'active', onclick: () => switchTab('connect') }, 'Connexion');
+  const btnReg = h('button', { onclick: () => switchTab('register') }, 'Inscription');
+  tabs.append(btnConn, btnReg);
+  card.appendChild(tabs);
+
+  const formArea = h('div', {});
+  card.appendChild(formArea);
+
+  const errorMsg = h('div', { class: 'error-msg' });
+
+  function switchTab(t) {
+    activeTab = t;
+    btnConn.classList.toggle('active', t === 'connect');
+    btnReg.classList.toggle('active', t === 'register');
+    formArea.innerHTML = '';
+    errorMsg.textContent = '';
+    if (t === 'connect') formArea.appendChild(renderConnectForm());
+    else formArea.appendChild(renderRegisterForm());
+    formArea.appendChild(errorMsg);
+  }
+  function renderConnectForm() {
+    const f = h('div');
+    const userInput = h('input', { type: 'text', placeholder: 'Identifiant' });
+    const pwdInput = h('input', { type: 'password', placeholder: 'Mot de passe' });
+    f.append(
+      h('div', { class: 'form-group' }, h('label', {}, 'Identifiant'), userInput),
+      h('div', { class: 'form-group' }, h('label', {}, 'Mot de passe'), pwdInput),
+      h('button', { class: 'btn-primary', onclick: tryLogin }, 'Se connecter')
+    );
+    pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+    function tryLogin() {
+      const u = authenticate(userInput.value.trim().toLowerCase(), pwdInput.value);
+      if (!u) { errorMsg.textContent = 'Identifiant ou mot de passe incorrect.'; return; }
+      APP.user = u;
+      APP.currentScreen = 'home';
+      render();
+    }
+    return f;
+  }
+  function renderRegisterForm() {
+    const f = h('div');
+    const fullName = h('input', { type: 'text', placeholder: 'Nom complet' });
+    const userInput = h('input', { type: 'text', placeholder: 'sans espaces' });
+    const classInput = h('input', { type: 'text', placeholder: 'Classe (optionnel)' });
+    const pwdInput = h('input', { type: 'password', placeholder: '4 caractères min.' });
+    const codeInput = h('input', { type: 'password', placeholder: 'Laisser vide pour élève' });
+    f.append(
+      h('div', { class: 'form-group' }, h('label', {}, 'Nom complet'), fullName),
+      h('div', { class: 'form-group' }, h('label', {}, 'Identifiant (sans espaces)'), userInput),
+      h('div', { class: 'form-group' }, h('label', {}, 'Classe / Groupe (facultatif)'), classInput),
+      h('div', { class: 'form-group' }, h('label', {}, 'Mot de passe'), pwdInput),
+      h('div', { class: 'form-group' },
+        h('label', {}, 'Code formateur (optionnel)'), codeInput,
+        h('div', { class: 'form-hint' }, 'Laissez vide pour un compte élève')),
+      h('button', { class: 'btn-primary', onclick: tryRegister }, 'Créer mon compte')
+    );
+    function tryRegister() {
+      const fn = fullName.value.trim(), un = userInput.value.trim().toLowerCase(),
+            pwd = pwdInput.value, cls = classInput.value.trim(), code = codeInput.value;
+      if (!fn || !un || !pwd) { errorMsg.textContent = 'Champs obligatoires : nom, identifiant, mot de passe.'; return; }
+      if (pwd.length < 4) { errorMsg.textContent = 'Mot de passe trop court (min. 4).'; return; }
+      if (un.includes(' ')) { errorMsg.textContent = 'L\'identifiant ne doit pas contenir d\'espaces.'; return; }
+      let role = 'student';
+      if (code) {
+        if (code !== 'MIENMO2026') { errorMsg.textContent = 'Code formateur incorrect.'; return; }
+        role = 'teacher';
+      }
+      if (!createUser(un, fn, pwd, role, cls)) { errorMsg.textContent = 'Cet identifiant existe déjà.'; return; }
+      errorMsg.style.color = '#107C10';
+      errorMsg.textContent = '✓ Compte créé ! Basculez sur Connexion.';
+      setTimeout(() => { switchTab('connect'); formArea.querySelector('input').value = un; }, 1200);
+    }
+    return f;
+  }
+
+  formArea.appendChild(renderConnectForm());
+  formArea.appendChild(errorMsg);
+  card.appendChild(h('div', { class: 'version-tag' }, 'Version 1.0 — Démo web'));
+  screen.appendChild(card);
+  return screen;
+}
+
+// --- HOME ---
+function renderHome() {
+  const main = h('div');
+  main.appendChild(renderHeader());
+
+  const body = h('div', { class: 'home-body' });
+  const totalExos = MODULES.reduce((s, m) => s + m.exercises.length, 0);
+  body.appendChild(h('div', { class: 'home-title' },
+    h('span', {}, '🗺️  Parcours de formation'),
+    h('span', { class: 'subtitle' }, `   12 modules • ${totalExos} exercices jouables (démo)`)));
+
+  const grid = h('div', { class: 'modules-grid' });
+  for (const m of MODULES) grid.appendChild(renderModuleCard(m));
+  body.appendChild(grid);
+
+  main.appendChild(body);
+  return main;
+}
+function renderHeader() {
+  const hdr = h('div', { class: 'app-header' });
+  const xp = APP.user.total_xp, level = APP.user.level;
+  const xpInLevel = xp % 100;
+  hdr.append(
+    h('div', { class: 'avatar' }, '👤'),
+    h('div', { class: 'user-info' },
+      h('div', { class: 'user-name' }, `Bonjour, ${APP.user.full_name}`),
+      h('div', { class: 'user-role' }, `${APP.user.role === 'teacher' ? 'Formateur' : 'Élève'}${APP.user.class_group ? ' • ' + APP.user.class_group : ''}`)),
+    h('div', { class: 'xp-block' },
+      h('div', { class: 'xp-level' }, `⭐ Niveau ${level}`),
+      h('div', { class: 'xp-bar' }, h('div', { class: 'xp-bar-fill', style: `width:${xpInLevel}%` })),
+      h('div', { class: 'xp-text' }, `${xpInLevel} / 100 XP vers niv. ${level+1} • Total : ${xp} XP`)),
+    h('div', { class: 'header-actions' },
+      h('button', { class: 'btn-header', onclick: () => { APP.currentScreen = 'leaderboard'; render(); } }, '🏆 Classement'),
+      h('button', { class: 'btn-header danger', onclick: () => { APP.user = null; APP.currentScreen = 'login'; render(); } }, 'Déconnexion'))
+  );
+  return hdr;
+}
+function renderModuleCard(m) {
+  const unlocked = moduleIsUnlocked(APP.user, m.id);
+  const prog = getModuleProgress(APP.user, m.id);
+  const card = h('div', { class: 'module-card' + (unlocked ? '' : ' locked') });
+  card.appendChild(h('div', { class: 'module-stripe', style: `background:${m.color}` }));
+
+  const content = h('div', { class: 'module-content' });
+  const header = h('div', { class: 'module-header' },
+    h('div', { class: 'module-icon' }, m.icon),
+    h('div', { class: 'module-title-block' },
+      h('div', { class: 'module-title' }, `Module ${m.id} • ${m.title}`),
+      h('div', { class: 'module-subtitle' }, m.subtitle)),
+    h('div', { class: 'module-status' }, !unlocked ? '🔒' : (prog.completed === prog.total && prog.total > 0 ? '✓' : ''))
+  );
+  content.appendChild(header);
+  content.appendChild(h('div', { class: 'module-desc' }, m.description));
+
+  if (prog.total > 0) {
+    const ratio = (prog.completed / prog.total) * 100;
+    content.appendChild(h('div', { class: 'module-progress' },
+      h('div', { class: 'progress-bar' }, h('div', { class: 'progress-bar-fill', style: `width:${ratio}%;background:${m.color}` })),
+      h('span', {}, `${prog.completed} / ${prog.total} exercices`)
+    ));
+  }
+
+  const actions = h('div', { class: 'module-actions' });
+  if (unlocked) {
+    actions.append(
+      h('button', { class: 'btn-module btn-lesson', onclick: () => { APP.currentModule = m; APP.currentScreen = 'lesson'; render(); } }, '📖 Leçon'),
+      h('button', { class: 'btn-module btn-exercise', onclick: () => { APP.currentModule = m; APP.currentExerciseIdx = 0; APP.currentScreen = 'exercise'; render(); } }, '▶ Exercices')
+    );
+  } else {
+    actions.appendChild(h('div', { class: 'lock-msg' }, '🔒 Réussir ≥ 70 % du module précédent pour débloquer.'));
+  }
+  content.appendChild(actions);
+
+  card.appendChild(content);
+  return card;
+}
+
+// --- LESSON ---
+function renderLesson() {
+  const m = APP.currentModule;
+  const main = h('div');
+
+  const header = h('div', { class: 'lesson-header', style: `background:${m.color}` },
+    h('button', { class: 'btn-back', onclick: () => { APP.currentScreen = 'home'; render(); } }, '← Retour'),
+    h('div', {},
+      h('h2', {}, `${m.icon}  Module ${m.id} — ${m.title}`),
+      h('div', { class: 'subtitle' }, m.subtitle)),
+    h('button', { class: 'btn-primary', style: 'width:auto;margin:0', onclick: () => { APP.currentExerciseIdx = 0; APP.currentScreen = 'exercise'; render(); } }, '▶ Aller aux exercices')
+  );
+  main.appendChild(header);
+
+  const body = h('div', { class: 'lesson-body' });
+
+  const tabs = h('div', { class: 'lesson-tabs' });
+  const tabContent = h('div');
+  m.lessons.forEach((l, i) => {
+    const btn = h('button', { class: i === 0 ? 'active' : '', onclick: () => {
+      tabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderLessonContent(l);
+    } }, l.title.split(' ')[0]);
+    tabs.appendChild(btn);
+  });
+  body.appendChild(tabs);
+  body.appendChild(tabContent);
+
+  function renderLessonContent(l) {
+    tabContent.innerHTML = '';
+    const card = h('div', { class: 'lesson-content-card' });
+    // Render content with simple markdown
+    const html = l.content
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/^• (.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>.+<\/li>)/s, '<ul>$1</ul>')
+      .replace(/(=[A-Z][A-Z0-9.]*\([^)]*\))/g, '<code>$1</code>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+    card.innerHTML = `<p>${html}</p>`;
+    tabContent.appendChild(card);
+    if (l.tip) {
+      tabContent.appendChild(h('div', { class: 'tip-box' },
+        h('div', { class: 'tip-title' }, '💡  Astuce du formateur'),
+        h('div', {}, l.tip)));
+    }
+  }
+  renderLessonContent(m.lessons[0]);
+
+  main.appendChild(body);
+  return main;
+}
+
+// --- EXERCISE ---
+function renderExercise() {
+  const m = APP.currentModule;
+  const ex = m.exercises[APP.currentExerciseIdx];
+  APP.hintsShown = 0;
+  APP.attempts = 0;
+  APP.gridCells = {...ex.initial_data};
+  APP.gridLocked = new Set(Object.keys(ex.initial_data));
+  APP.gridLocked.delete(ex.target_cell);
+  APP.gridTargetCell = ex.target_cell;
+  APP.gridActiveCell = ex.target_cell;
+
+  const main = h('div');
+  // Top bar
+  main.appendChild(h('div', { class: 'exercise-topbar', style: `background:${m.color}` },
+    h('button', { class: 'btn-back', onclick: () => { APP.currentScreen = 'home'; render(); } }, '← Retour'),
+    h('h3', {}, `${m.icon}  Module ${m.id} — ${m.title}`),
+    h('span', { class: 'progress-text' }, `Exercice ${APP.currentExerciseIdx + 1} / ${m.exercises.length}`)
+  ));
+
+  const body = h('div', { class: 'exercise-body' });
+
+  // LEFT: Grid
+  const leftPanel = h('div', { class: 'exercise-panel' });
+  const fbInput = h('input', { class: 'fb-input', type: 'text', placeholder: 'Saisissez votre formule (commence par =)' });
+  const nameBox = h('div', { class: 'fb-namebox' }, ex.target_cell);
+  leftPanel.appendChild(h('div', { class: 'formula-bar' },
+    nameBox, h('div', { class: 'fb-fx' }, 'ƒx'), fbInput
+  ));
+  const gridContainer = h('div', { class: 'excel-grid' });
+  leftPanel.appendChild(gridContainer);
+  renderGrid(gridContainer, fbInput, nameBox);
+
+  leftPanel.appendChild(h('div', { class: 'grid-actions' },
+    h('button', { class: 'btn-secondary', onclick: () => {
+      APP.gridCells = {...ex.initial_data};
+      renderGrid(gridContainer, fbInput, nameBox);
+    } }, '🧹 Réinitialiser'),
+    h('button', { class: 'btn-success', onclick: () => checkAnswer(ex, fbInput, gridContainer, rightPanelBody) }, '✓ Vérifier ma formule')
+  ));
+  body.appendChild(leftPanel);
+
+  // RIGHT: statement + hints + feedback
+  const rightPanel = h('div', { class: 'exercise-panel' });
+  rightPanel.appendChild(h('div', { class: 'right-panel-header', style: `background:${m.color}` }, `📝 ${ex.title}`));
+  const rightPanelBody = h('div', { class: 'right-panel-body' });
+  rightPanelBody.appendChild(h('div', { class: 'xp-badge' }, `🎯 Récompense : ${ex.xp} XP`));
+  rightPanelBody.appendChild(h('div', { class: 'section-title' }, '📖 Énoncé'));
+  rightPanelBody.appendChild(h('div', { class: 'statement-box' }, ex.statement));
+  rightPanelBody.appendChild(h('div', { class: 'target-msg' }, `✍️  Remplissez la cellule ${ex.target_cell} (en surbrillance jaune).`));
+  rightPanelBody.appendChild(h('div', { class: 'section-title' }, '💡 Indices'));
+  const hintsContainer = h('div', {});
+  rightPanelBody.appendChild(hintsContainer);
+  const hintsHint = h('div', { class: 'hint-hidden' }, `🔒 ${ex.hints.length} indice(s) disponibles. Chaque indice coûte -2 XP.`);
+  hintsContainer.appendChild(hintsHint);
+  const hintBtn = h('button', { class: 'btn-hint', onclick: () => {
+    if (APP.hintsShown >= ex.hints.length) return;
+    hintsHint.style.display = 'none';
+    const bubble = h('div', { class: 'hint-bubble' },
+      h('strong', {}, `💡 Indice ${APP.hintsShown + 1}`),
+      h('span', {}, ex.hints[APP.hintsShown]));
+    hintsContainer.insertBefore(bubble, hintBtn);
+    APP.hintsShown++;
+    if (APP.hintsShown >= ex.hints.length) { hintBtn.disabled = true; hintBtn.textContent = 'Tous les indices affichés'; }
+  } }, 'Afficher un indice');
+  hintsContainer.appendChild(hintBtn);
+
+  // Feedback zone
+  const fbZone = h('div', { id: 'feedback-zone' });
+  rightPanelBody.appendChild(fbZone);
+
+  // Navigation
+  const nav = h('div', { style: 'display:flex;justify-content:space-between;margin-top:16px' });
+  if (APP.currentExerciseIdx > 0) {
+    nav.appendChild(h('button', { class: 'btn-secondary', onclick: () => {
+      APP.currentExerciseIdx--; render();
+    } }, '◀ Précédent'));
+  } else { nav.appendChild(h('div', {})); }
+  if (APP.currentExerciseIdx < m.exercises.length - 1) {
+    nav.appendChild(h('button', { class: 'btn-secondary', onclick: () => {
+      APP.currentExerciseIdx++; render();
+    } }, 'Suivant ▶'));
+  } else { nav.appendChild(h('div', {})); }
+  rightPanelBody.appendChild(nav);
+
+  const scroll = h('div', { class: 'right-panel-scroll' }, rightPanelBody);
+  rightPanel.appendChild(scroll);
+  body.appendChild(rightPanel);
+
+  main.appendChild(body);
+  return main;
+}
+
+function renderGrid(container, fbInput, nameBox) {
+  container.innerHTML = '';
+  const table = h('table', { class: 'xls' });
+  const rows = 10, cols = 7;
+  // Header row
+  const headRow = h('tr');
+  headRow.appendChild(h('th', { class: 'row-header' }, ''));
+  for (let c = 1; c <= cols; c++) headRow.appendChild(h('th', {}, colIndexToLetter(c)));
+  table.appendChild(headRow);
+  // Data rows
+  for (let r = 1; r <= rows; r++) {
+    const tr = h('tr');
+    tr.appendChild(h('th', { class: 'row-header' }, String(r)));
+    for (let c = 1; c <= cols; c++) {
+      const ref = colIndexToLetter(c) + r;
+      const td = h('td', { 'data-ref': ref });
+      const raw = APP.gridCells[ref];
+      let display = '';
+      let isNum = false;
+      if (raw !== undefined && raw !== '') {
+        if (typeof raw === 'string' && raw.startsWith('=')) {
+          const [val, err] = safeEvaluate(raw, APP.gridCells);
+          if (err) { display = err; td.style.color = 'var(--error)'; }
+          else { display = formatDisplay(val); isNum = typeof val === 'number'; td.classList.add('formula-cell'); }
+        } else { display = String(raw); isNum = typeof raw === 'number'; }
+      }
+      if (isNum) td.classList.add('numeric');
+      if (APP.gridLocked.has(ref)) td.classList.add('locked');
+      if (ref === APP.gridTargetCell) td.classList.add('target');
+      if (ref === APP.gridActiveCell) td.classList.add('active');
+      td.textContent = display;
+      td.addEventListener('click', () => {
+        APP.gridActiveCell = ref;
+        nameBox.textContent = ref;
+        const cur = APP.gridCells[ref];
+        fbInput.value = cur !== undefined ? String(cur) : '';
+        if (!APP.gridLocked.has(ref)) fbInput.focus();
+        renderGrid(container, fbInput, nameBox);
+      });
+      td.addEventListener('dblclick', () => {
+        if (APP.gridLocked.has(ref)) return;
+        APP.gridActiveCell = ref;
+        fbInput.focus();
+      });
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+  container.appendChild(table);
+  // Formula bar commit handler
+  fbInput.onkeydown = (e) => {
+    if (e.key === 'Enter') {
+      const raw = fbInput.value.trim();
+      const ref = APP.gridActiveCell;
+      if (!APP.gridLocked.has(ref)) {
+        if (raw === '') delete APP.gridCells[ref];
+        else if (raw.startsWith('=')) APP.gridCells[ref] = raw;
+        else {
+          const n = parseFloat(raw.replace(',', '.'));
+          APP.gridCells[ref] = (!isNaN(n) && /^-?\d+([.,]\d+)?$/.test(raw)) ? n : raw;
+        }
+        renderGrid(container, fbInput, nameBox);
+      }
+    }
+  };
+}
+
+function formatDisplay(v) {
+  if (v === null || v === undefined || v === '') return '';
+  if (typeof v === 'boolean') return v ? 'VRAI' : 'FAUX';
+  if (typeof v === 'number') {
+    if (Number.isInteger(v)) return String(v);
+    return v.toFixed(6).replace(/\.?0+$/, '').replace('.', ',');
+  }
+  return String(v);
+}
+
+function checkAnswer(ex, fbInput, gridContainer, rightBody) {
+  APP.attempts++;
+  const fbZone = document.getElementById('feedback-zone');
+  fbZone.innerHTML = '';
+
+  const raw = APP.gridCells[ex.target_cell];
+  const userFormula = raw !== undefined ? String(raw).trim() : '';
+
+  if (!userFormula) {
+    return showError(fbZone, 'Cellule vide', `La cellule ${ex.target_cell} est vide. Écrivez une formule commençant par =.`);
+  }
+  if (!userFormula.startsWith('=')) {
+    return showError(fbZone, 'Pas de formule', 'Votre saisie ne commence pas par =. Toute formule Excel commence par le signe =.');
+  }
+
+  const ctx = {...ex.initial_data};
+  const [result, err] = safeEvaluate(userFormula, ctx);
+  if (err) {
+    return showError(fbZone, `Erreur : ${err}`,
+      `Votre formule provoque une erreur.\n\nVérifiez :\n• l'orthographe des fonctions (SOMME, SI, RECHERCHEV...)\n• les parenthèses fermées\n• le séparateur : ; (point-virgule)\n• les guillemets autour des textes "..."`);
+  }
+  if (!valuesEquivalent(result, ex.expected_value)) {
+    return showError(fbZone, 'Mauvais résultat',
+      `Votre formule donne :\n    ➜  ${formatDisplay(result)}\n\nRésultat attendu :\n    ➜  ${formatDisplay(ex.expected_value)}\n\nRevoyez votre logique ou utilisez un indice.`);
+  }
+  if (ex.mustContain) {
+    const missing = ex.mustContain.filter(t => !userFormula.toUpperCase().includes(t.toUpperCase()));
+    if (missing.length) {
+      return showError(fbZone, 'Technique attendue',
+        `Bravo, votre formule donne le bon résultat !\n\n⚠️ Mais pour cet exercice, la formule doit contenir : ${missing.join(', ')}\n\nRevoyez les indices pour la technique exacte.`);
+    }
+  }
+  awardSuccess(ex, fbZone);
+}
+
+function awardSuccess(ex, fbZone) {
+  const xpBase = ex.xp;
+  const bonus = APP.attempts === 1 ? 5 : (APP.attempts === 2 ? 3 : 0);
+  const malus = APP.hintsShown * 2;
+  const xpFinal = Math.max(1, xpBase + bonus - malus);
+
+  const prev = APP.user.progress[ex.id];
+  const wasFirst = !prev || prev.status !== 'completed';
+
+  recordAttempt(APP.user, APP.currentModule.id, ex.id, true, wasFirst ? xpFinal : 0, APP.hintsShown);
+  if (wasFirst) updateXP(APP.user, xpFinal);
+  APP.user = getUser(APP.user.username);
+  const newBadges = checkBadges(APP.user, APP.currentModule.id);
+
+  const banner = h('div', { class: 'feedback success' });
+  banner.appendChild(h('div', { class: 'fb-title success' }, wasFirst ? '🎉 BRAVO, BONNE RÉPONSE !' : '✓ Formule correcte'));
+  if (wasFirst) {
+    banner.appendChild(h('div', {}, `+${xpBase} XP (base)` + (bonus ? ` • +${bonus} XP (bonus ${APP.attempts}ᵉ essai)` : '') + (malus ? ` • -${malus} XP (${APP.hintsShown} indice)` : '')));
+    banner.appendChild(h('div', { class: 'xp-earned' }, `✨ Total gagné : +${xpFinal} XP`));
+  }
+  fbZone.appendChild(banner);
+
+  if (ex.explanation) {
+    fbZone.appendChild(h('div', { class: 'explanation' },
+      h('div', { class: 'explanation-title' }, '📚 Explication'),
+      h('div', {}, ex.explanation)));
+  }
+  for (const b of newBadges) {
+    fbZone.appendChild(h('div', { class: 'badge-popup' },
+      h('strong', {}, `🎖️ NOUVEAU BADGE : ${b.icon} ${b.name}`)));
+  }
+
+  // Next button
+  const m = APP.currentModule;
+  if (APP.currentExerciseIdx < m.exercises.length - 1) {
+    fbZone.appendChild(h('button', { class: 'btn-primary', style: 'width:auto;margin-top:14px', onclick: () => {
+      APP.currentExerciseIdx++; render();
+    } }, 'Exercice suivant ▶'));
+  } else {
+    fbZone.appendChild(h('button', { class: 'btn-primary', style: 'width:auto;margin-top:14px;background:var(--success)', onclick: () => {
+      APP.currentScreen = 'home'; render();
+    } }, '🏁 Terminer le module'));
+  }
+}
+
+function showError(fbZone, title, msg) {
+  const box = h('div', { class: 'feedback error' });
+  box.appendChild(h('div', { class: 'fb-title error' }, `✗ ${title}`));
+  box.appendChild(h('div', { style: 'white-space:pre-wrap' }, msg));
+  fbZone.appendChild(box);
+  recordAttempt(APP.user, APP.currentModule.id, MODULES.find(mm=>mm.id===APP.currentModule.id).exercises[APP.currentExerciseIdx].id, false, 0, 0);
+}
+
+// --- LEADERBOARD ---
+function renderLeaderboard() {
+  const main = h('div');
+  main.appendChild(h('div', { class: 'leaderboard-header' },
+    h('button', { class: 'btn-back', onclick: () => { APP.currentScreen = 'home'; render(); } }, '← Retour'),
+    h('h2', { style: 'font-size:22px;font-weight:bold;margin:0' }, '🏆  Classement des apprenants')
+  ));
+  const body = h('div', { class: 'leaderboard-body' });
+  const students = allStudents();
+  if (students.length === 0) {
+    body.appendChild(h('div', { class: 'center', style: 'padding:60px' }, 'Aucun élève pour l\'instant. Créez d\'autres comptes pour voir le classement.'));
+  } else {
+    // Podium
+    const podium = h('div', { class: 'podium' });
+    const positions = [[1, 'silver'], [0, 'gold'], [2, 'bronze']];
+    const medals = ['🥇', '🥈', '🥉'];
+    for (const [idx, cls] of positions) {
+      if (idx >= students.length) continue;
+      const s = students[idx];
+      podium.appendChild(h('div', { class: `podium-spot ${cls}` },
+        h('div', { class: 'medal' }, medals[idx]),
+        h('div', { class: 'name' }, s.full_name),
+        h('div', {}, `${s.total_xp} XP`),
+        h('div', { style: 'font-size:12px' }, `Niv. ${s.level}`)
+      ));
+    }
+    body.appendChild(podium);
+    body.appendChild(h('div', { class: 'center', style: 'font-size:18px;font-weight:bold;margin:15px 0' }, 'Classement complet'));
+    const table = h('table', { class: 'leaderboard-table' });
+    table.appendChild(h('tr', {},
+      h('th', {}, 'Rang'), h('th', {}, 'Apprenant'), h('th', {}, 'Classe'),
+      h('th', {}, 'Niveau'), h('th', {}, 'XP'), h('th', {}, 'Exos réussis'), h('th', {}, 'Badges')));
+    students.forEach((s, i) => {
+      const completed = Object.values(s.progress || {}).filter(p => p.status === 'completed').length;
+      const tr = h('tr', { class: s.username === APP.user.username ? 'me' : '' },
+        h('td', {}, `#${i+1}`), h('td', {}, s.full_name), h('td', {}, s.class_group || '—'),
+        h('td', {}, String(s.level)), h('td', {}, `${s.total_xp} XP`),
+        h('td', {}, String(completed)), h('td', {}, `🏅 ${(s.badges || []).length}`));
+      table.appendChild(tr);
+    });
+    body.appendChild(table);
+  }
+  main.appendChild(body);
+  return main;
+}
+
+// ===================================================================
+// BOOTSTRAP
+// ===================================================================
+render();
+
+// Optional: pré-créer un compte démo pour faciliter les tests
+(() => {
+  if (!getUser('demo')) {
+    createUser('demo', 'Élève Démo', 'demo', 'student', 'Démo');
+  }
+  if (!getUser('prof')) {
+    createUser('prof', 'Formateur Démo', 'prof', 'teacher', '');
+  }
+})();
+
+</script>
+</body>
+</html>
